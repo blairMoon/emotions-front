@@ -1,22 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
 
-import reportWebVitals from './reportWebVitals';
-import logo from './logo.svg';
-import './App.css';
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import reportWebVitals from "./reportWebVitals";
+
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import AppRouter from "./AppRouter";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-        <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          test main page
-        </p>
-      
-      </header>
-    </div>
+    <Router>
+      <div>
+        <AppRouter />
+      </div>
+    </Router>
   </React.StrictMode>
 );
 
