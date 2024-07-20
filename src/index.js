@@ -12,6 +12,19 @@ root.render(
   <React.StrictMode>
     <Router>
       <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/diary">diary</Link>
+            </li>
+            <li>
+              <Link to="/calendar">canlendar</Link>
+            </li>
+          </ul>
+        </nav>
         <AppRouter />
       </div>
     </Router>
