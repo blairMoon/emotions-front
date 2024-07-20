@@ -1,4 +1,4 @@
-## 비사이드 프론트엔드 개발 스택
+## 비사이드 프론트엔드 개발 스택 (라이브러리)
 
 ### 1. yarn classic
 
@@ -10,4 +10,4 @@
 
 ### 4. zustand (상태관리)
 
-### 5. react hook form 
+### 5. react hook form (form 전송)
