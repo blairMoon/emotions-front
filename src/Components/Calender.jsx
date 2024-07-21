@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const CalendarContainer = styled.div`
   display: flex;
@@ -27,6 +28,8 @@ const Day = styled.div`
   border: 1px solid #ddd;
   margin: 5px;
   text-align: center;
+  background-color: ${(props) => (props.isToday ? "#ffeb3b" : "transparent")};
+  cursor: pointer;
 `;
 
 const Button = styled.button`
@@ -41,9 +44,13 @@ const Button = styled.button`
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
+  const today = new Date();
+  const navigate = useNavigate();
+
   const getFormattedDate = (date) => {
     const month = date.getMonth() + 1; // Months are 0-based
-    return `${month}`;
+    const year = date.getFullYear();
+    return `${year}년 ${month}월`;
   };
 
   const handlePrevMonth = () => {
@@ -62,6 +69,10 @@ const Calendar = () => {
     });
   };
 
+  const handleDayClick = (year, month, day) => {
+    navigate(`/diary/${year}/${month}/${day}`);
+  };
+
   const renderDays = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -69,7 +80,19 @@ const Calendar = () => {
 
     const days = [];
     for (let day = 1; day <= daysInMonth; day++) {
-      days.push(<Day key={day}>{day}</Day>);
+      const isToday =
+        year === today.getFullYear() &&
+        month === today.getMonth() &&
+        day === today.getDate();
+      days.push(
+        <Day
+          key={day}
+          isToday={isToday}
+          onClick={() => handleDayClick(year, month + 1, day)}
+        >
+          {day}
+        </Day>
+      );
     }
 
     return days;

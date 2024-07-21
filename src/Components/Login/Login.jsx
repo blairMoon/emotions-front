@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigateExternal } from "../../hooks/useNavigateExternal";
+import { useNavigateExternal } from "../../Hooks/useNavigateExternal";
 import styled from "styled-components";
 
 const LoginContainer = styled.div`
@@ -48,12 +48,14 @@ const LoginButton = styled.button`
   }
 `;
 
-const LoginPage = () => {
+const Login = () => {
   const navigateExternal = useNavigateExternal();
 
   // TODO: clientId, redirectUri, naverLoginUrl 등은 .env 파일로 관리
   const clientId = "DBBq0YrcmGdcmZetwFd6";
-  const redirectUri = encodeURIComponent("http://localhost:3000/naver-callback");
+  const redirectUri = encodeURIComponent(
+    "http://localhost:3000/naver-callback"
+  );
 
   // TODO: CSRF 방지를 위한 랜덤한 문자열 생성
   const state = "RANDOM_STATEsdsd";
@@ -75,4 +77,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Login;
