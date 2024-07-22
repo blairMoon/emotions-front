@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import NavBar from "../../Components/NavBar";
 
 const Container = styled.div`
   border: 1px solid;
