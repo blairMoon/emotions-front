@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as AngerSvg } from "../../assets/images/anger.svg";
@@ -142,14 +142,8 @@ const ResgisterForm = () => {
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const forbiddenWords = ["관리자", "admin", "운영자", "tlqkf"]; // 금지어 목록
-
-  useEffect(() => {
-    validateNickname(nickname);
-  }, [nickname]);
-
-  const validateNickname = (name) => {
-    // TODO: 닉네임 체크 API 호출로 변경
+  const validateNickname = useCallback((name) => {
+    const forbiddenWords = ["관리자", "admin", "운영자", "tlqkf"]; // 금지어 목록
     const trimmedName = name.trim();
     if (trimmedName.length < 3) {
       setIsNicknameValid(false);
@@ -163,7 +157,11 @@ const ResgisterForm = () => {
       setIsNicknameValid(true);
       setErrorMessage("");
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    validateNickname(nickname);
+  }, [nickname, validateNickname]);
 
   const handleNicknameChange = (e) => {
     const newNickname = e.target.value;
