@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import LoadingPage from "./Loading";
 
 const NaverCallback = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const NaverCallback = () => {
         navigate("/email-check");
       } catch (error) {
         console.error("Login failed", error);
-        alert("로그인 실패");
+        alert("로그인에 실패했어요. 다시 시도해주세요.");
         navigate("/");
       }
     },
@@ -40,7 +41,7 @@ const NaverCallback = () => {
     }
   }, [location, navigate, sendCodeToBackend]);
 
-  return <div>네이버 로그인 처리 중...</div>;
+  return <LoadingPage />;
 };
 
 export default NaverCallback;

@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigateExternal } from "../../hooks/useNavigateExternal";
 import styled from "styled-components";
+import { ReactComponent as NaverIcon } from "../../assets/images/nLogo.svg";
 
 const LoginContainer = styled.div`
   display: flex;
@@ -32,7 +33,6 @@ const LoginButton = styled.button`
   width: 100%;
   max-width: 335px;
   height: 65px;
-  padding: 15px 0;
   background-color: #03c75a;
   color: white;
   border: none;
@@ -48,9 +48,14 @@ const LoginButton = styled.button`
   cursor: pointer;
 `;
 
-const NaverLogo = styled.span`
-  font-weight: bold;
-  margin-right: 8px;
+const ButtonContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledNaverLogo = styled(NaverIcon)`
+  margin-right: 20px;
 `;
 
 const Login = () => {
@@ -85,8 +90,10 @@ const Login = () => {
         </LoginText>
       </LoginBox>
       <LoginButton onClick={handleLogin}>
-        <NaverLogo>N</NaverLogo>
-        네이버로 로그인
+        <ButtonContent>
+          <StyledNaverLogo width={20} height={20} />
+          네이버로 로그인
+        </ButtonContent>
       </LoginButton>
     </LoginContainer>
   );

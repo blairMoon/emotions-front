@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as NaverLogo } from "../../assets/images/naverLogo.svg";
+import { ReactComponent as BackArrow } from "../../assets/images/backArrow.svg";
 
 const PageContainer = styled.div`
   display: flex;
@@ -20,13 +22,18 @@ const TopSection = styled.div`
 
 const Header = styled.header`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   color: #f4f4f4;
   width: 100%;
   height: 60px;
   margin-bottom: 8px;
+`;
+
+const StyledBackArrow = styled(BackArrow)`
+  cursor: pointer;
+  padding: 18px 0 16px 18px;
 `;
 
 const Title = styled.h1`
@@ -57,12 +64,7 @@ const EmailBox = styled.div`
   align-items: center;
 `;
 
-const NaverLogo = styled.span`
-  background-color: #03c75a;
-  color: #f4f4f4;
-  font-weight: bold;
-  padding: 5px 10px;
-  border-radius: 4px;
+const StyledNaverLogo = styled(NaverLogo)`
   margin-right: 10px;
 `;
 
@@ -107,7 +109,9 @@ const EmailCheck = () => {
     <PageContainer>
       <TopSection>
         <Header>
+          <StyledBackArrow width={24} height={24} />
           <Title>기능명</Title>
+          <div style={{ width: "24px" }} /> {/* 오른쪽 여백 맞추기 용 */}
         </Header>
         <Content>
           <Message>
@@ -116,7 +120,7 @@ const EmailCheck = () => {
             확인해주세요
           </Message>
           <EmailBox>
-            <NaverLogo>N</NaverLogo>
+            <StyledNaverLogo width={28} height={28} />
             <Email>{userEmail}</Email>
           </EmailBox>
         </Content>
