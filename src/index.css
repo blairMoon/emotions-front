@@ -8,3 +8,8 @@ body {
 :root {
   --vh: 100%;
 }
+
+/* 모든 요소에 box-sizing: border-box 적용 */
+*, *::before, *::after {
+  box-sizing: border-box;
+}

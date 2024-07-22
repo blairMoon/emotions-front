@@ -8,8 +8,8 @@ import AppRouter from "./AppRouter";
 import styled from "styled-components";
 
 const AppContainer = styled.div`
-  max-width: 393px; // 아이폰 15 기준
-  max-height: 852px; // 아이폰 15 기준
+  max-width: 375px; 
+  max-height: 768px; 
   margin: 0 auto;
   //padding: 2rem;
 `;
