@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigateExternal } from "../../Hooks/useNavigateExternal";
+import { useNavigateExternal } from "../../hooks/useNavigateExternal";
 import styled from "styled-components";
 
 const LoginContainer = styled.div`

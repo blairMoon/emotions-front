@@ -6,6 +6,10 @@ import styled from "styled-components";
 import NavBar from "../../Components/NavBar";
 
 const Container = styled.div`
+  border: 1px solid;
+  margin: 0 auto;
+  width: 375px;
+  height: 768px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -93,7 +97,6 @@ const DairyEntryForm = () => {
 
   return (
     <>
-      <NavBar />
       <Container>
         <Title>오늘 하루는 어떠셨나요?</Title>
         <SubTitle>
