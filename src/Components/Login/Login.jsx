@@ -54,7 +54,7 @@ const Login = () => {
   // TODO: clientId, redirectUri, naverLoginUrl 등은 .env 파일로 관리
   const clientId = "DBBq0YrcmGdcmZetwFd6";
   const redirectUri = encodeURIComponent(
-    "http://localhost:3000/naver-callback"
+    "http://localhost:3000/naver-callback",
   );
 
   // TODO: CSRF 방지를 위한 랜덤한 문자열 생성
