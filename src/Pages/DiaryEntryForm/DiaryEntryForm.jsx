@@ -95,8 +95,16 @@ const Imgcontainer = styled.div`
 `
 
 const CharCount = styled.div`
+
+text-align: right;
+font-family: SUIT;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%; /* 22.4px */
+letter-spacing: -0.32px;
   margin-top: 10px;
-  color: ${(props) => (props.$charCount > 300 ? "red" : "#333")};
+  color: ${(props) => (props.$charCount > 300 ? "red" : "var(--Gray-01, #727272)")};
 `;
 
 const ErrorMessage = styled.p`
@@ -105,10 +113,23 @@ const ErrorMessage = styled.p`
 `;
 
 const SubmitButton = styled.button`
-  margin-left: 10px;
+color: var(--Gray-01, #727272);
+text-align: center;
+/* Headline 2 */
+font-family: SUIT;
+font-size: 18px;
+font-style: normal;
+font-weight: 700;
+line-height: 160%; /* 28.8px */
+background: var(--Black-02, #1F1F1F);
+letter-spacing: -0.36px;
+width: 335px;
+height: 65px;
+flex-shrink: 0;
+margin-top: 134px;
   padding: 10px 20px;
-  margin-top: 20px;
-  background-color: #4caf50;
+
+  // background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
@@ -116,6 +137,8 @@ const SubmitButton = styled.button`
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
+
+
 
 const DairyEntryForm = () => {
   const navigate = useNavigate();
@@ -131,6 +154,7 @@ const DairyEntryForm = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    navigate("/result")
   };
 
  const getCurrentDate = () => {
@@ -162,6 +186,8 @@ const DairyEntryForm = () => {
    
 
         <form onSubmit={handleSubmit(onSubmit)}>
+
+           
           <TextArea
             {...register("diaryEntry", {
               required: "일기를 작성해 주세요.",
@@ -170,7 +196,7 @@ const DairyEntryForm = () => {
                 message: "일기는 300자 이하로 작성해 주세요.",
               },
             })}
-            placeholder="오늘 하루를 기록해보세요"
+            placeholder="오늘 하루를 기록해주세요!"
           />
           {errors.diaryEntry && (
             <ErrorMessage>{errors.diaryEntry.message}</ErrorMessage>
@@ -179,12 +205,11 @@ const DairyEntryForm = () => {
           <CharCount $charCount={diaryEntry.length}>
             {diaryEntry.length} / 300
           </CharCount>
-          <SubmitButton type="submit" onClick={handleLogout}>
-            로그아웃
-          </SubmitButton>
+      
           <SubmitButton type="submit" disabled={isDisabled}>
-            제출
+            오늘의 감정 만나러 가기 
           </SubmitButton>
+        
         </form>
       </Container>
     </>
