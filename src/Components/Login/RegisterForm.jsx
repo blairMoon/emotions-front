@@ -6,6 +6,8 @@ import { ReactComponent as JoySvg } from "../../assets/images/joy.svg";
 import { ReactComponent as PassionSvg } from "../../assets/images/passion.svg";
 import { ReactComponent as SadnessSvg } from "../../assets/images/sadness.svg";
 import { ReactComponent as ClearIcon } from "../../assets/images/inputClear.svg";
+import axios from "axios";
+import api from "../../utils/api";
 
 const PageContainer = styled.div`
   display: flex;
@@ -174,9 +176,27 @@ const ResgisterForm = () => {
     setErrorMessage("");
   };
 
-  const handleNext = () => {
+  const updateUserProfile = async () => {
+    try {
+      const response = await api.patch(`/api/v1/users/me`, {
+        nickname: nickname,
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("Failed to fetch user profile", error);
+    }
+  };
+
+  const handleNext = async () => {
     if (isNicknameValid) {
-      navigate("/diary");
+      try {
+        await updateUserProfile();
+        navigate("/diary");
+      } catch (error) {
+        console.error("Failed to update nickname", error);
+        setErrorMessage("닉네임 업데이트에 실패했습니다. 다시 시도해주세요.");
+      }
     }
   };
 

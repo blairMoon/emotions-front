@@ -1,20 +1,27 @@
 import React, { useEffect, useCallback } from "react";
-import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import LoadingPage from "./Loading";
+import useAuthStore from "../../stores/authStore";
+import api from "../../utils/api";
 
 const NaverCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
   const sendCodeToBackend = useCallback(
     async (code, state, provider) => {
       try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/naver-login?provider=${provider}`,
+        const response = await api.post(
+          `/api/v1/auth/naver-login?provider=${provider}`,
           { code, state },
         );
-        localStorage.setItem("jwt_token", response.data.access_token);
+        const accessToken = response.data.access_token;
+        setAccessToken(accessToken);
+
+        // 프로필 조회
+        await fetchUserProfile();
+
         navigate("/email-check");
       } catch (error) {
         console.error("Login failed", error);
@@ -22,8 +29,17 @@ const NaverCallback = () => {
         navigate("/");
       }
     },
-    [navigate],
+    [navigate, setAccessToken],
   );
+
+  const fetchUserProfile = async () => {
+    try {
+      const response = await api.get("/api/v1/users/me");
+      localStorage.setItem("user_email", response.data.email);
+    } catch (error) {
+      console.error("Failed to fetch user profile", error);
+    }
+  };
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -35,7 +51,6 @@ const NaverCallback = () => {
       sendCodeToBackend(code, state, provider);
     } else {
       console.error("Authorization code not found");
-
       navigate("/");
     }
   }, [location, navigate, sendCodeToBackend]);

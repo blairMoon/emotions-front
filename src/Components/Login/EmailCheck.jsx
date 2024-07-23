@@ -99,7 +99,7 @@ const NextButton = styled.button`
 const EmailCheck = () => {
   const navigate = useNavigate();
 
-  const userEmail = "tiramisu@naver.com";
+  const userEmail = localStorage.getItem("user_email");
 
   const handleNext = () => {
     navigate("/register");
