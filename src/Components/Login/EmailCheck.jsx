@@ -24,16 +24,20 @@ const Header = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   color: #f4f4f4;
   width: 100%;
   height: 60px;
   margin-bottom: 8px;
+  position: relative;
 `;
 
 const StyledBackArrow = styled(BackArrow)`
   cursor: pointer;
-  padding: 18px 0 16px 18px;
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 const Title = styled.h1`
@@ -105,13 +109,16 @@ const EmailCheck = () => {
     navigate("/register");
   };
 
+  const handleBack = () => {
+    navigate("/login");
+  };
+
   return (
     <PageContainer>
       <TopSection>
         <Header>
-          <StyledBackArrow width={24} height={24} />
+          <StyledBackArrow width={24} height={24} onClick={handleBack} />
           <Title>기능명</Title>
-          <div style={{ width: "24px" }} /> {/* 오른쪽 여백 맞추기 용 */}
         </Header>
         <Content>
           <Message>

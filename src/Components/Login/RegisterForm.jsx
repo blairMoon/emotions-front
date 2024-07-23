@@ -6,7 +6,6 @@ import { ReactComponent as JoySvg } from "../../assets/images/joy.svg";
 import { ReactComponent as PassionSvg } from "../../assets/images/passion.svg";
 import { ReactComponent as SadnessSvg } from "../../assets/images/sadness.svg";
 import { ReactComponent as ClearIcon } from "../../assets/images/inputClear.svg";
-import axios from "axios";
 import api from "../../utils/api";
 
 const PageContainer = styled.div`
@@ -138,7 +137,7 @@ const NextButton = styled.button`
   }
 `;
 
-const ResgisterForm = () => {
+const RegisterForm = () => {
   const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState(false);
@@ -241,4 +240,4 @@ const ResgisterForm = () => {
   );
 };
 
-export default ResgisterForm;
+export default RegisterForm;
