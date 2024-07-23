@@ -56,7 +56,14 @@ const TextArea = styled.textarea`
   border-radius: 10px;
   background: rgba(219, 219, 219, 0.08);
   backdrop-filter: blur(19.850000381469727px);
-
+ color: white;
+    font-family: SUIT;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; /* 28.8px */
+    letter-spacing: -0.36px;
+    outline: none;
   &::placeholder {
     color: var(--Gray-01, #727272);
     font-family: SUIT;
@@ -66,16 +73,7 @@ const TextArea = styled.textarea`
     line-height: 160%; /* 28.8px */
     letter-spacing: -0.36px;
   }
-  &:focus {
-    color: white;
-    font-family: SUIT;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 160%; /* 28.8px */
-    letter-spacing: -0.36px;
-    outline: none;
-  }
+
 `;
 const Imgcontainer = styled.div`
   position: absolute;
@@ -128,7 +126,6 @@ flex-shrink: 0;
 margin-top: 134px;
   padding: 10px 20px;
 
-  // background-color: #4caf50;
   color: white;
   border: none;
   border-radius: 4px;
@@ -179,7 +176,7 @@ const DairyEntryForm = () => {
       <Container>
         <NavBar />
         <Imgcontainer>
-          {" "}
+         
           <img src={ellipse} />
         </Imgcontainer>
         <DateDisplay> {getCurrentDate()}</DateDisplay>

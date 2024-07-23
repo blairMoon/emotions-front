@@ -7,6 +7,11 @@ import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
 import useAuthStore from "../../stores/authStore";
 import NavBarArrow from "../../Components/NavbarArrow";
+import emotionSad from "../../assets/images/emotionSad.svg"
+import emotionJoy from "../../assets/images/emotionJoy.svg"
+import emotionPassion from "../../assets/images/emotionPassion.svg"
+
+
 
 const Container = styled.div`
   height: calc(var(--vh, 1vh) * 100);
@@ -146,29 +151,62 @@ margin-top: 134px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
+const EmotionImg = styled.img`
+height:${props => props.height || 'auto'}; 
 
+  position: absolute;
+  left: ${props => props.left || 'auto'}; 
+  right: ${props => props.right || 'auto'}; 
+
+`
 const EmotionColor = styled.span`
   color: ${props => props.color || 'black'};
 `;
 
 
 const EmotionsWrp = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+`;
+const ParentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: ${props => props.justifyContent || 'flex-start'};
+`;
+const TextEmotionContainer = styled.div`
 width: 100%;
-display: flex;
-flex-direction: column;
-align-items: end;
-`
+height:100%;
+  padding: ${props => props.padding || '20px 20px 20px 55px'};
 
-const EmotionCommentWrp = styled.div`
-width: 294px;
-height:${props => props.height || '230px'};
-flex-shrink: 0;
-border-radius: 46px 20px 20px 15px;
-background: #333;
-margin-bottom:24px;
-display: flex;
-justify-content: end;
+
+
 `
+const EmotionCommentWrp = styled.div`
+  position: relative; 
+  width: 294px;
+  height: ${props => props.height || '230px'};
+  flex-shrink: 0;
+  border-radius: 46px 20px 20px 15px;
+  background: #333;
+  margin-bottom: 24px;
+  display: flex;
+
+  
+  align-items: center; /* 세로 가운데 정렬 */
+`;
+
+const Text = styled.p`color: var(--White-01, #F4F4F4);
+margin:0;
+
+font-size: 14px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%; /* 19.6px */
+letter-spacing: -0.28px;`
+
+
 const EmotionResultPage = () => {
   const navigate = useNavigate();
   const clearToken = useAuthStore((state) => state.clearToken);
@@ -207,16 +245,23 @@ const EmotionResultPage = () => {
 
     
 
-<EmotionsWrp>
 
- <EmotionCommentWrp height="120px"></EmotionCommentWrp>
-      <EmotionCommentWrp  height="100px"> </EmotionCommentWrp>
-      <EmotionCommentWrp height="100px"></EmotionCommentWrp>
-
-      </EmotionsWrp>
-    
-
-
+        <EmotionsWrp>
+      <ParentWrapper justifyContent="flex-end">
+        <EmotionCommentWrp height="120px"><EmotionImg height="79.6px" src={emotionJoy} left="-40px"/><TextEmotionContainer><Text>놀이공원이라니, 너무 재밌었겠다!
+마지막에 비가 온 건 아쉽지만..
+놀이공원에서의 날씨는 완벽했으니까!
+럭키비키라고 생각해 ㅎㅎ</Text></TextEmotionContainer></EmotionCommentWrp>
+      </ParentWrapper>
+      <ParentWrapper justifyContent="flex-start">
+        <EmotionCommentWrp height="100px"><EmotionImg height="80px" src={emotionSad}  right="-40px"/><TextEmotionContainer padding="20px 55px 20px 20px"><Text>아 완벽한 하루가 될 뻔 했는데..
+비가 쏟아진게 슬프다.. 비오면 마음도..
+축축..해지는데.. 신발도 다 젖었겠네..</Text></TextEmotionContainer></EmotionCommentWrp>
+      </ParentWrapper>
+      <ParentWrapper justifyContent="flex-end">
+        <EmotionCommentWrp height="60px"><EmotionImg  height="69px" src={emotionPassion} left="-30px"/><TextEmotionContainer><Text>우산쓰고 열심히 집 도착한 열정칭찬해🔥</Text></TextEmotionContainer></EmotionCommentWrp>
+      </ParentWrapper>
+    </EmotionsWrp>
 
       </Container>
     </>
