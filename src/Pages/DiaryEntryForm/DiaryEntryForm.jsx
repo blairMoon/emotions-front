@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
-import useAuthStore from "../../stores/authStore";
 
 const Container = styled.div`
   height: calc(var(--vh, 1vh) * 100);
@@ -28,11 +27,6 @@ const Title = styled.h1`
   margin-top: 0;
   font-size: 24px;
   line-height: 160%;
-`;
-
-const SubTitle = styled.h3`
-  color: #666;
-  text-align: center;
 `;
 
 const DateDisplay = styled.h4`
@@ -94,16 +88,16 @@ const Imgcontainer = styled.div`
 `;
 
 const CharCount = styled.div`
-
-text-align: right;
-font-family: SUIT;
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: 140%; /* 22.4px */
-letter-spacing: -0.32px;
+  text-align: right;
+  font-family: SUIT;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 22.4px */
+  letter-spacing: -0.32px;
   margin-top: 10px;
-  color: ${(props) => (props.$charCount > 300 ? "red" : "var(--Gray-01, #727272)")};
+  color: ${(props) =>
+    props.$charCount > 300 ? "red" : "var(--Gray-01, #727272)"};
 `;
 
 const ErrorMessage = styled.p`
@@ -112,20 +106,20 @@ const ErrorMessage = styled.p`
 `;
 
 const SubmitButton = styled.button`
-color: var(--Gray-01, #727272);
-text-align: center;
-/* Headline 2 */
-font-family: SUIT;
-font-size: 18px;
-font-style: normal;
-font-weight: 700;
-line-height: 160%; /* 28.8px */
-background: var(--Black-02, #1F1F1F);
-letter-spacing: -0.36px;
-width: 335px;
-height: 65px;
-flex-shrink: 0;
-margin-top: 134px;
+  color: var(--Gray-01, #727272);
+  text-align: center;
+  /* Headline 2 */
+  font-family: SUIT;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 160%; /* 28.8px */
+  background: var(--Black-02, #1f1f1f);
+  letter-spacing: -0.36px;
+  width: 335px;
+  height: 65px;
+  flex-shrink: 0;
+  margin-top: 134px;
   padding: 10px 20px;
 
   // background-color: #4caf50;
@@ -137,11 +131,8 @@ margin-top: 134px;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
 
-
-
 const DairyEntryForm = () => {
   const navigate = useNavigate();
-  const clearToken = useAuthStore((state) => state.clearToken);
 
   const {
     register,
@@ -154,7 +145,7 @@ const DairyEntryForm = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    navigate("/emotionResult")
+    navigate("/emotionResult");
   };
 
   const getCurrentDate = () => {
@@ -163,11 +154,6 @@ const DairyEntryForm = () => {
     const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
     const day = today.getDate();
     return ` ${month}월 ${day}일`;
-  };
-
-  const handleLogout = () => {
-    clearToken();
-    navigate("/login");
   };
 
   useEffect(() => {
@@ -180,7 +166,7 @@ const DairyEntryForm = () => {
         <NavBar />
         <Imgcontainer>
           {" "}
-          <img src={ellipse} />
+          <img src={ellipse} alt="ellipse" />
         </Imgcontainer>
         <DateDisplay> {getCurrentDate()}</DateDisplay>
         <Title>
@@ -188,8 +174,6 @@ const DairyEntryForm = () => {
         </Title>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-
-           
           <TextArea
             {...register("diaryEntry", {
               required: "일기를 작성해 주세요.",
@@ -207,11 +191,10 @@ const DairyEntryForm = () => {
           <CharCount $charCount={diaryEntry.length}>
             {diaryEntry.length} / 300
           </CharCount>
-      
+
           <SubmitButton type="submit" disabled={isDisabled}>
-            오늘의 감정 만나러 가기 
+            오늘의 감정 만나러 가기
           </SubmitButton>
-        
         </form>
       </Container>
     </>
