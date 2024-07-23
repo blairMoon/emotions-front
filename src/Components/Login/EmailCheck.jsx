@@ -118,7 +118,7 @@ const EmailCheck = () => {
       <TopSection>
         <Header>
           <StyledBackArrow width={24} height={24} onClick={handleBack} />
-          <Title>기능명</Title>
+          <Title>이메일 확인</Title>
         </Header>
         <Content>
           <Message>

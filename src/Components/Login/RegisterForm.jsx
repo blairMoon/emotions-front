@@ -205,7 +205,7 @@ const RegisterForm = () => {
         <WelcomeMessage>
           반가워요,
           <br />
-          (서비스명)에 오신 걸 환영해요!
+          마이모지에 오신 걸 환영해요!
         </WelcomeMessage>
         <EmoticonContainer>
           <AngerSvg width={28} height={28} />
