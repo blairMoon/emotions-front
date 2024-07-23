@@ -6,13 +6,14 @@ import styled from "styled-components";
 import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
 import useAuthStore from "../../stores/authStore";
+import NavBarArrow from "../../Components/NavbarArrow";
 
 const Container = styled.div`
   height: calc(var(--vh, 1vh) * 100);
   border: 1px solid;
   margin: 0 auto;
   width: 375px;
-  background-color: #1a1a1a;
+  background-color: black;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -30,9 +31,16 @@ const Title = styled.h1`
   line-height: 160%;
 `;
 
-const SubTitle = styled.h3`
-  color: #666;
-  text-align: center;
+const SubTitle = styled.p`
+margin:0 0 24px 0;
+ color: var(--Gray-01, #727272);
+
+font-family: SUIT;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 140%; /* 22.4px */
+letter-spacing: -0.32px;
 `;
 
 const DateDisplay = styled.h4`
@@ -111,6 +119,8 @@ const ErrorMessage = styled.p`
   margin-top: 5px;
 `;
 
+
+
 const SubmitButton = styled.button`
 color: var(--Gray-01, #727272);
 text-align: center;
@@ -128,7 +138,7 @@ flex-shrink: 0;
 margin-top: 134px;
   padding: 10px 20px;
 
-  // background-color: #4caf50;
+
   color: white;
   border: none;
   border-radius: 4px;
@@ -137,9 +147,29 @@ margin-top: 134px;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `;
 
+const EmotionColor = styled.span`
+  color: ${props => props.color || 'black'};
+`;
 
 
-const DairyEntryForm = () => {
+const EmotionsWrp = styled.div`
+width: 100%;
+display: flex;
+flex-direction: column;
+align-items: end;
+`
+
+const EmotionCommentWrp = styled.div`
+width: 294px;
+height:${props => props.height || '230px'};
+flex-shrink: 0;
+border-radius: 46px 20px 20px 15px;
+background: #333;
+margin-bottom:24px;
+display: flex;
+justify-content: end;
+`
+const EmotionResultPage = () => {
   const navigate = useNavigate();
   const clearToken = useAuthStore((state) => state.clearToken);
 
@@ -154,68 +184,43 @@ const DairyEntryForm = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    navigate("/emotionResult")
+    navigate("/result")
   };
 
-  const getCurrentDate = () => {
-    const today = new Date();
-
-    const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
-    const day = today.getDate();
-    return ` ${month}월 ${day}일`;
-  };
-
-  const handleLogout = () => {
-    clearToken();
-    navigate("/login");
-  };
-
-  useEffect(() => {
-    setIsDisabled(diaryEntry.length === 0 || diaryEntry.length > 300);
-  }, [diaryEntry]);
+ 
 
   return (
     <>
+     <NavBarArrow />
       <Container>
-        <NavBar />
-        <Imgcontainer>
-          {" "}
-          <img src={ellipse} />
-        </Imgcontainer>
-        <DateDisplay> {getCurrentDate()}</DateDisplay>
+
+  
         <Title>
-          오늘은 어떤 감정들이 <br /> 나타날까요?
+        <EmotionColor color="var(--Yellow-01, #F9E44A)">기쁨</EmotionColor>,   
+      <EmotionColor color="var(--Blue-01, #5B75FF)" className="joy">슬픔</EmotionColor>, 
+      <EmotionColor color="var(--Green-01, #3BE780)" className="joy">열정</EmotionColor>이 
+      <br /> 포텐님께 찾아왔어요!
+
+     
         </Title>
+        <SubTitle>가장 인상 깊은 감정이를 선택해주세요</SubTitle>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+    
 
-           
-          <TextArea
-            {...register("diaryEntry", {
-              required: "일기를 작성해 주세요.",
-              maxLength: {
-                value: 300,
-                message: "일기는 300자 이하로 작성해 주세요.",
-              },
-            })}
-            placeholder="오늘 하루를 기록해주세요!"
-          />
-          {errors.diaryEntry && (
-            <ErrorMessage>{errors.diaryEntry.message}</ErrorMessage>
-          )}
+<EmotionsWrp>
 
-          <CharCount $charCount={diaryEntry.length}>
-            {diaryEntry.length} / 300
-          </CharCount>
-      
-          <SubmitButton type="submit" disabled={isDisabled}>
-            오늘의 감정 만나러 가기 
-          </SubmitButton>
-        
-        </form>
+ <EmotionCommentWrp height="120px"></EmotionCommentWrp>
+      <EmotionCommentWrp  height="100px"> </EmotionCommentWrp>
+      <EmotionCommentWrp height="100px"></EmotionCommentWrp>
+
+      </EmotionsWrp>
+    
+
+
+
       </Container>
     </>
   );
 };
 
-export default DairyEntryForm;
+export default EmotionResultPage;

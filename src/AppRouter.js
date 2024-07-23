@@ -8,6 +8,7 @@ import NaverCallback from "./Components/Login/NaverCallback";
 import DailyDiaryPage from "./Pages/DailyDiaryPage/DailyDiaryPage";
 import EmailCheck from "./Components/Login/EmailCheck";
 import RegisterForm from "./Components/Login/RegisterForm";
+import EmotionResultPage from "./Pages/EmotionResultPage/EmotrionResultPage";
 
 const AppRouter = () => {
   function setScreenSize() {
@@ -32,6 +33,7 @@ const AppRouter = () => {
       {/* 다이어리 */}
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/diary/:year/:month/:day" element={<DailyDiaryPage />} />
+      <Route path="/emotionResult" element={<EmotionResultPage />} />
     </Routes>
   );
 };
