@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import LoadingPage from "./Loading";
 
 const NaverCallback = () => {
   const navigate = useNavigate();
@@ -10,19 +11,18 @@ const NaverCallback = () => {
     async (code, state, provider) => {
       try {
         const response = await axios.post(
-          `https://bumpy-bunny-koreaboardgamearena-36c727ad.koyeb.app/api/v1/auth/naver-login?provider=${provider}`,
-          { code, state }
+          `${process.env.REACT_APP_BACKEND_URL}/api/v1/auth/naver-login?provider=${provider}`,
+          { code, state },
         );
-        console.log("Login successful", response.data);
         localStorage.setItem("jwt_token", response.data.access_token);
-        navigate("/diary");
+        navigate("/email-check");
       } catch (error) {
         console.error("Login failed", error);
-        alert('로그인 실패')
+        alert("로그인에 실패했어요. 다시 시도해주세요.");
         navigate("/");
       }
     },
-    [navigate]
+    [navigate],
   );
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const NaverCallback = () => {
     }
   }, [location, navigate, sendCodeToBackend]);
 
-  return <div>네이버 로그인 처리 중...</div>;
+  return <LoadingPage />;
 };
 
 export default NaverCallback;
