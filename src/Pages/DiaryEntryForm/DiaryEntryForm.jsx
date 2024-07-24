@@ -45,19 +45,19 @@ const TextArea = styled.textarea`
   width: 335px;
   height: 281px;
   flex-shrink: 0;
-  border-radius: 6px;
   border: 1px solid var(--Gray-01, #727272);
   border-radius: 10px;
   background: rgba(219, 219, 219, 0.08);
   backdrop-filter: blur(19.850000381469727px);
- color: white;
-    font-family: SUIT;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 160%; /* 28.8px */
-    letter-spacing: -0.36px;
-    outline: none;
+  color: #f4f4f4;
+  font-family: SUIT;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 160%; /* 28.8px */
+  letter-spacing: -0.36px;
+  outline: none;
+
   &::placeholder {
     color: var(--Gray-01, #727272);
     font-family: SUIT;
@@ -67,8 +67,8 @@ const TextArea = styled.textarea`
     line-height: 160%; /* 28.8px */
     letter-spacing: -0.36px;
   }
-
 `;
+
 const Imgcontainer = styled.div`
   position: absolute;
   top: 0;
@@ -120,7 +120,7 @@ const SubmitButton = styled.button`
   margin-top: 134px;
   padding: 10px 20px;
 
-  color: white;
+  color: #f4f4f4;
   border: none;
   border-radius: 4px;
   font-size: 16px;

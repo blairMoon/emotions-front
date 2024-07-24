@@ -11,6 +11,7 @@ const NavList = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
+  z-index: 2;
 `;
 
 const NavItem = styled.li``;
@@ -22,6 +23,7 @@ const NavLink = styled(Link)`
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: background-color 0.3s ease;
+  cursor: pointer;
 `;
 
 const NavBar = () => {
@@ -34,7 +36,7 @@ const NavBar = () => {
       </NavItem>
 
       <NavItem>
-        <NavLink to="/diary">
+        <NavLink to="/setting">
           <img src={setting} alt="setting"></img>
         </NavLink>
       </NavItem>

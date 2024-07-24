@@ -34,7 +34,7 @@ const LoginButton = styled.button`
   max-width: 335px;
   height: 65px;
   background-color: #03c75a;
-  color: white;
+  color: #f4f4f4;
   border: none;
   border-radius: 8px;
   font-size: 18px;

@@ -86,7 +86,7 @@ const NextButton = styled.button`
   height: 65px;
   padding: 15px 0;
   background-color: #101010;
-  color: white;
+  color: #f4f4f4;
   border: none;
   border-radius: 8px;
   font-size: 18px;

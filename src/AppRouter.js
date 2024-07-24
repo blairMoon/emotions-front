@@ -9,6 +9,7 @@ import DailyDiaryPage from "./Pages/DailyDiaryPage/DailyDiaryPage";
 import EmailCheck from "./Components/Login/EmailCheck";
 import RegisterForm from "./Components/Login/RegisterForm";
 import EmotionResultPage from "./Pages/EmotionResultPage/EmotrionResultPage";
+import SettingPage from "./Pages/SettingPage/SettingPage";
 
 const AppRouter = () => {
   function setScreenSize() {
@@ -34,6 +35,8 @@ const AppRouter = () => {
       <Route path="/diary" element={<DiaryPage />} />
       <Route path="/diary/:year/:month/:day" element={<DailyDiaryPage />} />
       <Route path="/emotionResult" element={<EmotionResultPage />} />
+      {/* 설정  */}
+      <Route path="/setting" element={<SettingPage />} />
     </Routes>
   );
 };
