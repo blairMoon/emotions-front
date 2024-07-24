@@ -77,13 +77,11 @@ const Login = () => {
     <LoginContainer>
       <LoginBox>
         <LoginText>
-          서비스명과
+          감정이들과
           <br />
-          서비스로고
+          함께하는
           <br />
-          나오면
-          <br />
-          수정 예정입니다
+          마이모지
         </LoginText>
       </LoginBox>
       <LoginButton onClick={handleLogin}>

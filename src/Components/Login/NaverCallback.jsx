@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useCallback, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import LoadingPage from "./Loading";
 import useAuthStore from "../../stores/authStore";
 import api from "../../utils/api";
@@ -35,7 +35,10 @@ const NaverCallback = () => {
   const fetchUserProfile = async () => {
     try {
       const response = await api.get("/api/v1/users/me");
-      localStorage.setItem("user_email", response.data.email);
+
+      if (response.status === 200) {
+        localStorage.setItem("user_email", response.data.data.email);
+      }
     } catch (error) {
       console.error("Failed to fetch user profile", error);
     }
