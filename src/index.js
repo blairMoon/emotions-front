@@ -8,7 +8,7 @@ import AppRouter from "./AppRouter";
 import styled from "styled-components";
 
 const AppContainer = styled.div`
-  max-width: 375px;
+  max-width: 400px;
   max-height: 768px;
   margin: 0 auto;
   //padding: 2rem;
