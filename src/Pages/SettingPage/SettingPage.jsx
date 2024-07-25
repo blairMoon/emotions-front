@@ -1,123 +1,113 @@
 import React from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as BackArrow } from "../../assets/images/backArrow.svg";
 
-const PageContainer = styled.div`
+import styled from "styled-components";
+import NavBarArrow from "../../Components/NavbarArrow";
+import ToggleButton from "../../Components/Toggle";
+import NextArrow from "../../assets/images/nextArrow.svg";
+import useAuthStore from "../../stores/authStore";
+
+const Container = styled.div`
   height: calc(var(--vh, 1vh) * 100);
   margin: 0 auto;
   width: 375px;
-  background-color: #1a1a1a;
+  background-color: var(--Black-03, #1a1a1a);
   display: flex;
   flex-direction: column;
   position: relative;
   padding: 20px;
-  color: #f4f4f4;
+  font-family: Arial, sans-serif;
+  color: var(--White-01, #f4f4f4);
 `;
 
-const Header = styled.header`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+const SettingsWrp = styled.div`
   width: 100%;
-  height: 60px;
-  position: relative;
-  border-bottom: 1px solid #e0e0e0;
-`;
-
-const StyledBackArrow = styled(BackArrow)`
-  cursor: pointer;
-  position: absolute;
-  left: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-`;
-
-const Title = styled.h1`
-  font-size: 18px;
-  font-weight: bold;
-  text-align: center;
-  flex: 1;
-`;
-
-const SettingsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px;
 `;
 
 const SettingItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 0;
+  padding: 12px 0;
 `;
 
-const SettingTitle = styled.span`
+const SettingText = styled.span`
+  color: var(--White-01, #f4f4f4);
+  font-family: SUIT;
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  letter-spacing: -0.36px;
 `;
 
-const ToggleSwitch = styled.input.attrs({ type: "checkbox" })`
-  // 토글
+const VersionInfo = styled.div`
+  color: var(--Gray-01, #727272);
+  font-family: SUIT;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.32px;
 `;
 
-const ChevronRight = styled.span`
-  // 오른쪽 화살표 아이콘
+const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  padding: 15px 0;
+  text-align: left;
   cursor: pointer;
+  color: var(--Red-01, #e14c4c);
+  font-family: SUIT;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.36px;
 `;
 
-const SettingPage = () => {
+const SettingsPage = () => {
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    navigate(-1);
+  const clearToken = useAuthStore((state) => state.clearToken);
+  const handleLogout = () => {
+    clearToken();
+    navigate("/");
   };
 
   return (
-    <PageContainer>
-      <Header>
-        <StyledBackArrow width={24} height={24} onClick={handleBack} />
-        <Title>설정</Title>
-      </Header>
-      <SettingsContainer>
+    <Container>
+      <NavBarArrow />
+      <SettingsWrp>
         <SettingItem>
-          <SettingTitle>서비스 알림 허용</SettingTitle>
-          <ToggleSwitch />
+          <SettingText>서비스 알림 허용</SettingText>
+          <ToggleButton initialState={true} />
         </SettingItem>
         <SettingItem>
-          <SettingTitle>나의 프로필</SettingTitle>
-          <ChevronRight>&gt;</ChevronRight>
+          <SettingText>나의 프로필</SettingText>
+          <img src={NextArrow} alt="next arrow" />
         </SettingItem>
         <SettingItem>
-          <SettingTitle>서비스 가이드 보기</SettingTitle>
-          <ChevronRight>&gt;</ChevronRight>
+          <SettingText>1:1 문의</SettingText>
+          <img src={NextArrow} alt="next arrow" />
         </SettingItem>
         <SettingItem>
-          <SettingTitle>1:1 문의</SettingTitle>
-          <ChevronRight>&gt;</ChevronRight>
+          <SettingText>이용약관</SettingText>
+          <img src={NextArrow} alt="next arrow" />
         </SettingItem>
         <SettingItem>
-          <SettingTitle>서비스 정보 (현재 ver 1.0)</SettingTitle>
-          <ChevronRight>&gt;</ChevronRight>
+          <SettingText>개인정보 처리 방침</SettingText>
+          <img src={NextArrow} alt="next arrow" />
         </SettingItem>
         <SettingItem>
-          <SettingTitle>개인정보 처리 방침</SettingTitle>
-          <ChevronRight>&gt;</ChevronRight>
+          <SettingText>버전 정보</SettingText>
+          <VersionInfo>ver 1.0</VersionInfo>
         </SettingItem>
-        <SettingItem>
-          <SettingTitle>서비스 이용 약관</SettingTitle>
-          <ChevronRight>&gt;</ChevronRight>
-        </SettingItem>
-        <SettingItem>
-          <SettingTitle>로그아웃</SettingTitle>
-          <ChevronRight>&gt;</ChevronRight>
-        </SettingItem>
-      </SettingsContainer>
-    </PageContainer>
+        <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+      </SettingsWrp>
+    </Container>
   );
 };
 
-export default SettingPage;
+export default SettingsPage;
