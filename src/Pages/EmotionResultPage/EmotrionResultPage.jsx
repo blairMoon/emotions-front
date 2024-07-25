@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState , useEffect} from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate } from "react-router-dom";
+
 import styled from "styled-components";
 import NavBarArrow from "../../Components/NavbarArrow";
 import emotionSad from "../../assets/images/emotionSad.svg";
 import emotionJoy from "../../assets/images/emotionJoy.svg";
 import emotionPassion from "../../assets/images/emotionPassion.svg";
-
+import SubmitButton from "../../Components/Btn";
+import Modal from "../../Components/Modal";
 const Container = styled.div`
   height: calc(var(--vh, 1vh) * 100);
   border: 1px solid;
   margin: 0 auto;
   width: 375px;
-  background-color: black;
+  background-color: var(--Black-03, #1A1A1A);
   display: flex;
   flex-direction: column;
   position: relative;
-
   padding: 20px;
   font-family: Arial, sans-serif;
 `;
@@ -38,15 +41,16 @@ const SubTitle = styled.p`
   line-height: 140%; /* 22.4px */
   letter-spacing: -0.32px;
 `;
+
 const EmotionImg = styled.img`
-  height: ${(props) => props.height || "auto"};
+  height: ${(props) => props.height || 'auto'};
   position: absolute;
-  left: ${(props) => props.left || "auto"};
-  right: ${(props) => props.right || "auto"};
+  left: ${(props) => props.left || 'auto'};
+  right: ${(props) => props.right || 'auto'};
 `;
 
 const EmotionColor = styled.span`
-  color: ${(props) => props.color || "black"};
+  color: ${(props) => props.color || 'black'};
 `;
 
 const EmotionsWrp = styled.div`
@@ -59,27 +63,42 @@ const EmotionsWrp = styled.div`
 const ParentWrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: ${(props) => props.justifyContent || "flex-start"};
+  justify-content: ${(props) => props.justifyContent || 'flex-start'};
 `;
 
 const TextEmotionContainer = styled.div`
   width: 100%;
   height: 100%;
-  padding: ${(props) => props.padding || "20px 20px 20px 55px"};
+  padding: ${(props) => props.padding || '20px 20px 20px 55px'};
+   
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
 `;
 
 const EmotionCommentWrp = styled.div`
+
+  background-color: ${(props) =>
+    props.isSelected
+      ? props.emotion === 'joy'
+        ? 'rgba(249, 228, 74, 0.16)'
+        : props.emotion === 'sad'
+        ? '#262B46'
+        : props.emotion === 'passion'
+        ? 'rgba(59, 231, 128, 0.12)'
+        : ' #333'
+      : ' #333'};
   position: relative;
   width: 294px;
-  height: ${(props) => props.height || "230px"};
+  height: ${(props) => props.height || '230px'};
   flex-shrink: 0;
   border-radius: 46px 20px 20px 15px;
-  background: #333;
+  
   margin-bottom: 24px;
   display: flex;
-  align-items: center; /* 세로 가운데 정렬 */
+  align-items: center; 
+  cursor: pointer; 
 `;
-
 const Text = styled.p`
   color: var(--White-01, #f4f4f4);
   margin: 0;
@@ -90,17 +109,48 @@ const Text = styled.p`
   letter-spacing: -0.28px;
 `;
 
+
 const EmotionResultPage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { handleSubmit, setValue } = useForm();
+  const [selectedEmotion, setSelectedEmotion] = useState(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [currentDate, setCurrentDate] = useState('');
+  const navigate = useNavigate();
+   useEffect(() => {
+    setIsButtonDisabled(selectedEmotion === null);
+
+    const date = new Date();
+    const formattedDate = `${String(date.getMonth() + 1).padStart(2, '0')}월${String(date.getDate()).padStart(2, '0')}일`;
+    setCurrentDate(formattedDate);
+  }, [selectedEmotion]);
+
+  const handleEmotionClick = (emotion) => {
+    setSelectedEmotion(emotion);
+    setValue('emotion', emotion);
+    console.log(emotion);
+  };
+
+ const onSubmit = (data) => {
+    console.log('emotion', data);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    navigate('/calendar')
+  };
+
   return (
-    <>
-      <NavBarArrow />
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Container>
+        <NavBarArrow />
         <Title>
           <EmotionColor color="var(--Yellow-01, #F9E44A)">기쁨</EmotionColor>,
           <EmotionColor color="var(--Blue-01, #5B75FF)" className="joy">
             슬픔
-          </EmotionColor>
-          ,
+          </EmotionColor>,
           <EmotionColor color="var(--Green-01, #3BE780)" className="joy">
             열정
           </EmotionColor>
@@ -111,19 +161,28 @@ const EmotionResultPage = () => {
 
         <EmotionsWrp>
           <ParentWrapper justifyContent="flex-end">
-            <EmotionCommentWrp height="120px">
+            <EmotionCommentWrp
+              height="120px"
+              emotion="joy"
+              isSelected={selectedEmotion === 'joy'}
+              onClick={() => handleEmotionClick('joy')}
+            >
               <EmotionImg height="79.6px" src={emotionJoy} left="-40px" />
               <TextEmotionContainer>
                 <Text>
-                  놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건
-                  아쉽지만.. 놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고
-                  생각해 ㅎㅎ
+                  놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건 아쉽지만..
+                  놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고 생각해 ㅎㅎ
                 </Text>
               </TextEmotionContainer>
             </EmotionCommentWrp>
           </ParentWrapper>
           <ParentWrapper justifyContent="flex-start">
-            <EmotionCommentWrp height="100px">
+            <EmotionCommentWrp
+              height="100px"
+              emotion="sad"
+              isSelected={selectedEmotion === 'sad'}
+              onClick={() => handleEmotionClick('sad')}
+            >
               <EmotionImg height="80px" src={emotionSad} right="-40px" />
               <TextEmotionContainer padding="20px 55px 20px 20px">
                 <Text>
@@ -134,7 +193,12 @@ const EmotionResultPage = () => {
             </EmotionCommentWrp>
           </ParentWrapper>
           <ParentWrapper justifyContent="flex-end">
-            <EmotionCommentWrp height="60px">
+            <EmotionCommentWrp
+              height="60px"
+              emotion="passion"
+              isSelected={selectedEmotion === 'passion'}
+              onClick={() => handleEmotionClick('passion')}
+            >
               <EmotionImg height="69px" src={emotionPassion} left="-30px" />
               <TextEmotionContainer>
                 <Text>우산쓰고 열심히 집 도착한 열정칭찬해🔥</Text>
@@ -142,9 +206,16 @@ const EmotionResultPage = () => {
             </EmotionCommentWrp>
           </ParentWrapper>
         </EmotionsWrp>
+        <input type="hidden" name="emotion" />
+        <SubmitButton type="submit" disabled={isButtonDisabled}>
+          선택 완료
+        </SubmitButton>
       </Container>
-    </>
+        {isModalOpen && (
+        <Modal selectedEmotion={selectedEmotion} onClose={handleCloseModal} currentDate={currentDate}/>)}
+    </form>
   );
 };
+
 
 export default EmotionResultPage;

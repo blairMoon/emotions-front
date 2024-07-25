@@ -5,16 +5,13 @@ import arrow from "./../assets/images/ion_arrow-back.svg";
 
 const NavList = styled.ul`
   display: flex;
-  width: 375px;
-  height: 60px;
-  padding: 16px;
-
-  flex-shrink: 0;
-
-  margin: 0 auto;
+  width: 100%;
+padding:0;
+margin:0;
+  
   height: 60px;
 
-  background-color: black;
+  background-color: var(--Black-03, #1A1A1A);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -26,7 +23,7 @@ const NavLink = styled(Link)`
   text-decoration: none;
 
   font-weight: bold;
-  //   padding: 0.5rem 1rem;
+
   border-radius: 4px;
   transition: background-color 0.3s ease;
 `;
