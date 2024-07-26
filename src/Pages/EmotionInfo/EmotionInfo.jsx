@@ -17,6 +17,8 @@ const Container = styled.div`
   position: relative;
   padding: 0 20px;
   height: calc(var(--vh, 1vh) * 100);
+  overflow: scroll;
+  scrollbar-width: none;
 `;
 
 const InfoWrap = styled.div`
