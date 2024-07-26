@@ -8,6 +8,7 @@ import ellipse from "../../assets/images/Ellipse2820.svg";
 import InfoIcon from "../../assets/images/info.svg";
 import api from "../../utils/api";
 import DiaryLoading from "../../Components/DiaryLoading";
+import useAuthStore from "../../stores/authStore";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -153,16 +154,43 @@ const SubmitButton = styled.button`
   background-color: ${(props) => (props.disabled ? "#1f1f1f" : "#101010")};
 `;
 
+const emotionMap = {
+  1: "열정",
+  2: "기쁨",
+  3: "감동",
+  4: "불안",
+  5: "버럭",
+  6: "슬픔",
+};
+
+const emotionColorMap = {
+  열정: "#3BE780",
+  기쁨: "#F9E44A",
+  감동: "#F667AC",
+  불안: "#9250FC",
+  버럭: "#E14C4C",
+  슬픔: "#5B75FF",
+};
+
+const ColoredEmotion = styled.span`
+  color: ${(props) => props.color};
+`;
+
 const DairyEntryForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [canCreate, setCanCreate] = useState(false);
+  const accessToken = useAuthStore((state) => state.accessToken);
+  const [topEmotions, setTopEmotions] = useState([]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm();
+
   const diaryEntry = watch("diaryEntry", "");
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -170,9 +198,17 @@ const DairyEntryForm = () => {
     setLoading(true);
 
     try {
-      const response = await api.post(`/api/v1/diaries/`, {
-        content: data.diaryEntry,
-      });
+      const response = await api.post(
+        `/api/v1/diaries/`,
+        {
+          content: data.diaryEntry,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
 
       console.log(response.data);
 
@@ -203,6 +239,39 @@ const DairyEntryForm = () => {
   };
 
   useEffect(() => {
+    const fetchTodayDiary = async () => {
+      try {
+        const response = await api.get("/api/v1/diaries/today", {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setCanCreate(response.data.data.can_create);
+          setValue("diaryEntry", response.data.data.diary.content);
+          if (
+            response.data.data.diary &&
+            response.data.data.diary.emotion_reacts
+          ) {
+            const sortedEmotions = response.data.data.diary.emotion_reacts
+              .filter((emotion) => emotion.percent > 0)
+              .sort((a, b) => b.percent - a.percent)
+              .slice(0, 3)
+              .map((emotion) => emotion.emotion_id); // emotion_id를 사용하거나 필요한 다른 속성으로 변경할 수 있습니다.
+
+            setTopEmotions(sortedEmotions);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+      }
+    };
+
+    fetchTodayDiary();
+  }, []);
+
+  useEffect(() => {
     setIsDisabled(diaryEntry.length === 0 || diaryEntry.length > 300);
   }, [diaryEntry]);
 
@@ -218,7 +287,24 @@ const DairyEntryForm = () => {
       </ImgContainer>
       <DateDisplay>{getCurrentDate()}</DateDisplay>
       <Title>
-        오늘은 어떤 감정들이 <br /> 나타날까요?
+        {canCreate ? (
+          <>
+            오늘은 어떤 감정들이 <br /> 나타날까요?
+          </>
+        ) : (
+          <>
+            오늘은 <br />
+            {topEmotions.map((emotionId, index) => (
+              <React.Fragment key={emotionId}>
+                <ColoredEmotion color={emotionColorMap[emotionMap[emotionId]]}>
+                  {emotionMap[emotionId]}
+                </ColoredEmotion>
+                {index < topEmotions.length - 1 && ", "}
+              </React.Fragment>
+            ))}
+            을 만났어요
+          </>
+        )}
       </Title>
       <Info>
         <img src={InfoIcon} alt="info" />
@@ -235,6 +321,7 @@ const DairyEntryForm = () => {
             },
           })}
           placeholder="오늘 하루를 기록해주세요!"
+          readOnly={!canCreate}
         />
         {errors.diaryEntry && (
           <ErrorMessage>{errors.diaryEntry.message}</ErrorMessage>
@@ -244,8 +331,11 @@ const DairyEntryForm = () => {
           {diaryEntry.length} / 300
         </CharCount>
 
-        <SubmitButton type="submit" disabled={isDisabled}>
-          오늘의 감정 만나러 가기
+        <SubmitButton
+          type="submit"
+          disabled={!canCreate || (canCreate && isDisabled)}
+        >
+          {canCreate ? "오늘의 감정 만나러 가기" : "내일 다시 만나요!"}
         </SubmitButton>
       </form>
     </Container>

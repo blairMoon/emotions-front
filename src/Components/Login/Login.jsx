@@ -2,13 +2,14 @@ import React from "react";
 import { useNavigateExternal } from "../../hooks/useNavigateExternal";
 import styled from "styled-components";
 import { ReactComponent as NaverIcon } from "../../assets/images/nLogo.svg";
+import Logo from "../../assets/images/logo.svg";
 
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: #1a1a1a;
+  background-color: #f4f4f4;
   height: calc(var(--vh, 1vh) * 100);
   position: relative;
 `;
@@ -78,13 +79,7 @@ const Login = () => {
   return (
     <LoginContainer>
       <LoginBox>
-        <LoginText>
-          감정이들과
-          <br />
-          함께하는
-          <br />
-          마이모지
-        </LoginText>
+        <img src={Logo} alt="logo" />
       </LoginBox>
       <LoginButton onClick={handleLogin}>
         <ButtonContent>
