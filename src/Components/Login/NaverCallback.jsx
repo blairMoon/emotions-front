@@ -17,12 +17,19 @@ const NaverCallback = () => {
           { code, state },
         );
         const accessToken = response.data.access_token;
+        const isNewUser = response.data.is_new_user;
+
         setAccessToken(accessToken);
 
         // 프로필 조회
         await fetchUserProfile();
 
-        navigate("/email-check");
+        if (isNewUser) {
+          navigate("/email-check");
+          return;
+        }
+
+        navigate("/diary");
       } catch (error) {
         console.error("Login failed", error);
         alert("로그인에 실패했어요. 다시 시도해주세요.");
