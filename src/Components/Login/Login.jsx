@@ -7,9 +7,10 @@ const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: calc(var(--vh, 1vh) * 100);
   justify-content: space-between;
   background-color: #1a1a1a;
+  height: calc(var(--vh, 1vh) * 100);
+  position: relative;
 `;
 
 const LoginBox = styled.div`
@@ -44,7 +45,8 @@ const LoginButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 34px;
+  position: absolute;
+  bottom: 20px;
   cursor: pointer;
 `;
 

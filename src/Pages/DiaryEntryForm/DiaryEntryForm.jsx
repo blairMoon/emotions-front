@@ -7,35 +7,38 @@ import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
 
 const Container = styled.div`
-  height: calc(var(--vh, 1vh) * 100);
-  border: 1px solid;
   margin: 0 auto;
-  width: 375px;
   background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
   position: relative;
-
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 0 20px 0 20px;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100%;
 `;
 
-const Title = styled.h1`
-  position: relative;
-  z-index: 2;
-  color: var(--White-01, #f4f4f4);
-  margin-top: 0;
-  font-size: 24px;
-  line-height: 160%;
-`;
-
-const DateDisplay = styled.h4`
+const DateDisplay = styled.div`
   position: relative;
   z-index: 2;
   font-weight: 500;
   color: #767676;
   font-size: 20px;
-  margin-bottom: 8px;
+  font-style: normal;
+  line-height: 160%;
+  letter-spacing: -0.4px;
+  margin-bottom: 4px;
+`;
+
+const Title = styled.div`
+  position: relative;
+  z-index: 2;
+  color: var(--White-01, #f4f4f4);
+  margin-bottom: 72px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 38px;
+  letter-spacing: -0.48px;
 `;
 
 const TextArea = styled.textarea`
@@ -57,6 +60,7 @@ const TextArea = styled.textarea`
   line-height: 160%; /* 28.8px */
   letter-spacing: -0.36px;
   outline: none;
+  resize: none;
 
   &::placeholder {
     color: var(--Gray-01, #727272);
@@ -69,7 +73,7 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Imgcontainer = styled.div`
+const ImgContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -91,9 +95,9 @@ const CharCount = styled.div`
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 140%; /* 22.4px */
+  line-height: 22px;
   letter-spacing: -0.32px;
-  margin-top: 10px;
+  margin-top: 12px;
   color: ${(props) =>
     props.$charCount > 300 ? "red" : "var(--Gray-01, #727272)"};
 `;
@@ -104,7 +108,6 @@ const ErrorMessage = styled.p`
 `;
 
 const SubmitButton = styled.button`
-  color: var(--Gray-01, #727272);
   text-align: center;
   /* Headline 2 */
   font-family: SUIT;
@@ -112,20 +115,19 @@ const SubmitButton = styled.button`
   font-style: normal;
   font-weight: 700;
   line-height: 160%; /* 28.8px */
-  background: var(--Black-02, #1f1f1f);
   letter-spacing: -0.36px;
-  width: 335px;
+  width: 100%;
+  max-width: 335px;
   height: 65px;
   flex-shrink: 0;
-  margin-top: 134px;
-  padding: 10px 20px;
+  position: absolute;
+  bottom: 20px;
 
-  color: #f4f4f4;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 8px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  color: ${(props) => (props.disabled ? "#727272" : "#f4f4f4")};
+  background-color: ${(props) => (props.disabled ? "#1f1f1f" : "#101010")};
 `;
 
 const DairyEntryForm = () => {
@@ -158,43 +160,40 @@ const DairyEntryForm = () => {
   }, [diaryEntry]);
 
   return (
-    <>
-      <Container>
-        <NavBar />
-        <Imgcontainer>
-          {" "}
-          <img src={ellipse} alt="ellipse" />
-        </Imgcontainer>
-        <DateDisplay> {getCurrentDate()}</DateDisplay>
-        <Title>
-          오늘은 어떤 감정들이 <br /> 나타날까요?
-        </Title>
+    <Container>
+      <NavBar />
+      <ImgContainer>
+        <img src={ellipse} alt="ellipse" />
+      </ImgContainer>
+      <DateDisplay>{getCurrentDate()}</DateDisplay>
+      <Title>
+        오늘은 어떤 감정들이 <br /> 나타날까요?
+      </Title>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextArea
-            {...register("diaryEntry", {
-              required: "일기를 작성해 주세요.",
-              maxLength: {
-                value: 300,
-                message: "일기는 300자 이하로 작성해 주세요.",
-              },
-            })}
-            placeholder="오늘 하루를 기록해주세요!"
-          />
-          {errors.diaryEntry && (
-            <ErrorMessage>{errors.diaryEntry.message}</ErrorMessage>
-          )}
+      <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
+        <TextArea
+          {...register("diaryEntry", {
+            required: "일기를 작성해 주세요.",
+            maxLength: {
+              value: 300,
+              message: "일기는 300자 이하로 작성해 주세요.",
+            },
+          })}
+          placeholder="오늘 하루를 기록해주세요!"
+        />
+        {errors.diaryEntry && (
+          <ErrorMessage>{errors.diaryEntry.message}</ErrorMessage>
+        )}
 
-          <CharCount $charCount={diaryEntry.length}>
-            {diaryEntry.length} / 300
-          </CharCount>
+        <CharCount $charCount={diaryEntry.length}>
+          {diaryEntry.length} / 300
+        </CharCount>
 
-          <SubmitButton type="submit" disabled={isDisabled}>
-            오늘의 감정 만나러 가기
-          </SubmitButton>
-        </form>
-      </Container>
-    </>
+        <SubmitButton type="submit" disabled={isDisabled}>
+          오늘의 감정 만나러 가기
+        </SubmitButton>
+      </form>
+    </Container>
   );
 };
 

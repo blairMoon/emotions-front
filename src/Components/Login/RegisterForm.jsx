@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as AngerSvg } from "../../assets/images/anger.svg";
-import { ReactComponent as JoySvg } from "../../assets/images/joy.svg";
-import { ReactComponent as PassionSvg } from "../../assets/images/passion.svg";
-import { ReactComponent as SadnessSvg } from "../../assets/images/sadness.svg";
+import { ReactComponent as AngerSvg } from "../../assets/images/anger_noeye.svg";
+import { ReactComponent as JoySvg } from "../../assets/images/joy_noeye.svg";
+import { ReactComponent as PassionSvg } from "../../assets/images/passion_noeye.svg";
+import { ReactComponent as SadnessSvg } from "../../assets/images/sadness_noeye.svg";
 import { ReactComponent as ClearIcon } from "../../assets/images/inputClear.svg";
 import api from "../../utils/api";
 
@@ -13,7 +13,6 @@ const PageContainer = styled.div`
   flex-direction: column;
   color: #f4f4f4;
   padding: 0 20px;
-  height: calc(var(--vh, 1vh) * 100);
   justify-content: space-between;
   background-color: #1a1a1a;
 `;

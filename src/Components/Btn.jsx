@@ -1,7 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const SubmitButton = styled.button`
-  color: var(--Gray-01, #727272);
   text-align: center;
   /* Headline 2 */
   font-family: SUIT;
@@ -9,20 +8,19 @@ const SubmitButton = styled.button`
   font-style: normal;
   font-weight: 700;
   line-height: 160%; /* 28.8px */
-  background: var(--Black-02, #1f1f1f);
   letter-spacing: -0.36px;
-  width: 335px;
+  width: 100%;
+  max-width: 335px;
   height: 65px;
   flex-shrink: 0;
-  margin-top: 134px;
-  padding: 10px 20px;
+  position: absolute;
+  bottom: 20px;
 
-  color: #f4f4f4;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 8px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  color: ${(props) => (props.disabled ? "#727272" : "#f4f4f4")};
+  background-color: ${(props) => (props.disabled ? "#1f1f1f" : "#101010")};
 `;
 
 export default SubmitButton;

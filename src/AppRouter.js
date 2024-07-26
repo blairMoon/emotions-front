@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./Pages/Home/HomePage";
 import DiaryPage from "./Pages/DiaryEntryForm/DiaryEntryForm";
 import Calendar from "./Pages/CalendarPage/CalendarPage";
 import LoginPage from "./Components/Login/Login";
@@ -23,7 +22,7 @@ const AppRouter = () => {
   return (
     <Routes>
       {/* 홈 */}
-      <Route path="/" element={<HomePage />} />
+      <Route path="/" element={<LoginPage />} />
       {/* 캘린더 */}
       <Route path="/calendar" element={<Calendar />} />
       {/* 로그인 */}

@@ -8,7 +8,6 @@ const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   color: #f4f4f4;
-  height: calc(var(--vh, 1vh) * 100);
   justify-content: space-between;
   align-items: center;
   background-color: #1a1a1a;

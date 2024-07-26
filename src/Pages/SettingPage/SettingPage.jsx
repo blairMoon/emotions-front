@@ -4,20 +4,17 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NavBarArrow from "../../Components/NavbarArrow";
 import ToggleButton from "../../Components/Toggle";
-import NextArrow from "../../assets/images/nextArrow.svg";
+import NextArrow from "../../assets/images/arrowRight.svg";
 import useAuthStore from "../../stores/authStore";
 
 const Container = styled.div`
-  height: calc(var(--vh, 1vh) * 100);
   margin: 0 auto;
-  width: 375px;
   background-color: var(--Black-03, #1a1a1a);
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: var(--White-01, #f4f4f4);
+  padding: 0 20px;
+  height: calc(var(--vh, 1vh) * 100);
 `;
 
 const SettingsWrp = styled.div`

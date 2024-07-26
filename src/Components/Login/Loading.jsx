@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { ReactComponent as AngerSvg } from "../../assets/images/anger.svg";
-import { ReactComponent as JoySvg } from "../../assets/images/joy.svg";
-import { ReactComponent as PassionSvg } from "../../assets/images/passion.svg";
-import { ReactComponent as SadnessSvg } from "../../assets/images/sadness.svg";
+import { ReactComponent as AngerSvg } from "../../assets/images/anger_noeye.svg";
+import { ReactComponent as JoySvg } from "../../assets/images/joy_noeye.svg";
+import { ReactComponent as PassionSvg } from "../../assets/images/passion_noeye.svg";
+import { ReactComponent as SadnessSvg } from "../../assets/images/sadness_noeye.svg";
 
 const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  color: #f4f4f4;
-  padding: 0 20px;
-  height: calc(var(--vh, 1vh) * 100);
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   background-color: #1a1a1a;
+  color: #f4f4f4;
+  height: calc(var(--vh, 1vh) * 100);
 `;
 
 const LoadingMessage = styled.h1`

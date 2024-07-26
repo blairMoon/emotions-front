@@ -6,11 +6,9 @@ import arrow from "./../assets/images/ion_arrow-back.svg";
 const NavList = styled.ul`
   display: flex;
   width: 100%;
-  padding: 0;
+  padding: 18px 0;
   margin: 0;
-
   height: 60px;
-
   background-color: var(--Black-03, #1a1a1a);
   display: flex;
   flex-direction: column;
