@@ -4,10 +4,17 @@ import Btn from "./Btn";
 import Joy from "../assets/images/emotionJoy.svg";
 import Sad from "../assets/images/emotionSad.svg";
 import Passion from "../assets/images/emotionPassion.svg";
+import Anger from "../assets/images/emotionAnger.svg";
+import Moved from "../assets/images/emotionMoved.svg";
+import Anxiety from "../assets/images/emotionAnxiety.svg";
 
 const CustomSubmitButton = styled(Btn)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-top: 40px;
 `;
+
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
@@ -27,17 +34,9 @@ const ModalContent = styled.div`
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  width: 375px;
 `;
 
-// const CloseButton = styled.button`
-//   margin-top: 20px;
-//   padding: 10px 20px;
-//   border: none;
-//   background-color: #333;
-//   color: white;
-//   cursor: pointer;
-//   border-radius: 5px;
-// `;
 const ModalText = styled.div`
   color: var(--Black-02, #1f1f1f);
   text-align: center;
@@ -49,19 +48,25 @@ const ModalText = styled.div`
   line-height: 160%; /* 32px */
   letter-spacing: -0.4px;
 `;
+
 const ModalImg = styled.img`
   margin-top: 50px;
   width: 146px;
   height: 146px;
   margin-bottom: 24px;
 `;
+
 const Bold = styled.span`
   font-weight: 800;
 `;
+
 const emotionMap = {
   joy: { label: "기쁨", img: Joy },
   sad: { label: "슬픔", img: Sad },
   passion: { label: "열정", img: Passion },
+  anger: { label: "버럭", img: Anger },
+  moved: { label: "감동", img: Moved },
+  anxiety: { label: "불안", img: Anxiety },
 };
 
 const Modal = ({ selectedEmotion, onClose, currentDate }) => {
