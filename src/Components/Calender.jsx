@@ -125,6 +125,10 @@ const Calendar = () => {
   const today = new Date();
   const navigate = useNavigate();
 
+  const goToMonthCard = () => {
+    navigate("/monthcard");
+  };
+
   const getFormattedDate = (date) => {
     const month = date.getMonth() + 1; // Months are 0-based
     const year = date.getFullYear();
@@ -221,7 +225,7 @@ const Calendar = () => {
               )}
             </DayImageRight>
           </DayBottom>
-        </Day>,
+        </Day>
       );
     }
 
@@ -244,7 +248,9 @@ const Calendar = () => {
         </SubTitleArea>
       </Header>
       <DaysContainer>{renderDays()}</DaysContainer>
-      <SubmitButton type="submit">이달의 감정 카드 확인하기</SubmitButton>
+      <SubmitButton onClick={goToMonthCard}>
+        이달의 감정 카드 확인하기
+      </SubmitButton>
     </CalendarContainer>
   );
 };

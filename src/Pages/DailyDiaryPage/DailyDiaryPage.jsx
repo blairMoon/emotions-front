@@ -7,10 +7,11 @@ import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
 import InfoIcon from "../../assets/images/info.svg";
 import EmotionComment from "../../Components/EmtionComment";
+import NavBarArrow from "../../Components/NavbarArrow";
 
 const Container = styled.div`
   margin: 0 auto;
-  background-color: #1a1a1a;
+  background-color: #191919;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -146,11 +147,8 @@ const DailyDiaryPage = () => {
 
   return (
     <Container>
-      <NavBar />
-      <ImgContainer>
-        <img src={ellipse} alt="ellipse" />
-      </ImgContainer>
-      <DateDisplay></DateDisplay>
+      <NavBarArrow to="/calendar" />
+
       <Title>
         {year}년 {month}월 {day}일에는 <br />
         <EmotionColor color="var(--Yellow-01, #F9E44A)">기쁨</EmotionColor>,

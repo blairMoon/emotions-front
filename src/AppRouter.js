@@ -10,6 +10,7 @@ import RegisterForm from "./Components/Login/RegisterForm";
 import EmotionResultPage from "./Pages/EmotionResultPage/EmotrionResultPage";
 import SettingPage from "./Pages/SettingPage/SettingPage";
 import EmotionInfo from "./Pages/EmotionInfo/EmotionInfo";
+import MonthlyEmotionPage from "./Pages/MonthlyEmotionPage/MonthlyEmotionPage";
 
 const AppRouter = () => {
   function setScreenSize() {
@@ -26,6 +27,8 @@ const AppRouter = () => {
       <Route path="/" element={<LoginPage />} />
       {/* 캘린더 */}
       <Route path="/calendar" element={<Calendar />} />
+      <Route path="/monthcard" element={<MonthlyEmotionPage />} />
+
       {/* 로그인 */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/email-check" element={<EmailCheck />} />
