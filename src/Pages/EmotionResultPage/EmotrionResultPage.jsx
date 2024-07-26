@@ -28,6 +28,10 @@ const Title = styled.div`
   font-size: 24px;
   line-height: 38px;
   margin-bottom: 16px;
+  font-family: SUIT;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.48px;
 `;
 
 const SubTitle = styled.div`
@@ -102,7 +106,7 @@ const Text = styled.p`
   margin: 0;
   font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: ${(props) => (props.isSelected ? "500" : "400")};
   line-height: 140%; /* 19.6px */
   letter-spacing: -0.28px;
 `;
@@ -167,7 +171,7 @@ const EmotionResultPage = () => {
             >
               <EmotionImg height="79.6px" src={emotionJoy} left="-40px" />
               <TextEmotionContainer>
-                <Text>
+                <Text isSelected={selectedEmotion === "joy"}>
                   놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건
                   아쉽지만.. 놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고
                   생각해 ㅎㅎ
@@ -184,7 +188,7 @@ const EmotionResultPage = () => {
             >
               <EmotionImg height="80px" src={emotionSad} right="-40px" />
               <TextEmotionContainer padding="20px 55px 20px 20px">
-                <Text>
+                <Text isSelected={selectedEmotion === "sad"}>
                   아 완벽한 하루가 될 뻔 했는데.. 비가 쏟아진게 슬프다.. 비오면
                   마음도.. 축축..해지는데.. 신발도 다 젖었겠네..
                 </Text>
@@ -200,7 +204,9 @@ const EmotionResultPage = () => {
             >
               <EmotionImg height="69px" src={emotionPassion} left="-30px" />
               <TextEmotionContainer>
-                <Text>우산쓰고 열심히 집 도착한 열정칭찬해🔥</Text>
+                <Text isSelected={selectedEmotion === "passion"}>
+                  우산쓰고 열심히 집 도착한 열정칭찬해🔥
+                </Text>
               </TextEmotionContainer>
             </EmotionCommentWrp>
           </ParentWrapper>
