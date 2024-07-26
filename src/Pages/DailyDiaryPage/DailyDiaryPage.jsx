@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useNavigate, useLocation, useParams, useForm } from "react-router-dom";
+import EmotionMoved from "./../../assets/images/emotionMoved.svg";
+import EmotionAnger from "./../../assets/images/emotionAnger.svg";
+import EmotionPassion from "./../../assets/images/emotionPassion.svg";
+import EmotionAnxiety from "./../../assets/images/emotionAnxiety.svg";
+import EmotionSad from "./../../assets/images/emotionSad.svg";
+import EmotionJoy from "./../../assets/images/emotionJoy.svg";
 import styled from "styled-components";
 import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
 import InfoIcon from "../../assets/images/info.svg";
 import EmotionComment from "../../Components/EmtionComment";
 import NavBarArrow from "../../Components/NavbarArrow";
-
+import api from "./../../utils/api";
+import useAuthStore from "./../../stores/authStore";
 const Container = styled.div`
   margin: 0 auto;
   background-color: #191919;
@@ -20,18 +25,6 @@ const Container = styled.div`
   width: 100%;
   overflow: scroll;
   scrollbar-width: none;
-`;
-
-const DateDisplay = styled.div`
-  position: relative;
-  z-index: 2;
-  font-weight: 500;
-  color: #767676;
-  font-size: 20px;
-  font-style: normal;
-  line-height: 160%;
-  letter-spacing: -0.4px;
-  margin-bottom: 4px;
 `;
 
 const Title = styled.div`
@@ -98,21 +91,6 @@ const Text = styled.div`
   }
 `;
 
-const ImgContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  display: flex;
-
-  overflow: hidden;
-  img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    filter: blur(5px); /* 이미지에 블러 효과 적용 */
-  }
-`;
 const EmotionColor = styled.span`
   color: ${(props) => props.color || "black"};
 `;
@@ -137,13 +115,83 @@ const OtherEmotionWrp = styled.div`
   flex-direction: column;
   align-items: flex-end;
 `;
+
 const DailyDiaryPage = () => {
+  const [DetailData, setDetailData] = useState([]);
+  const [DetailEmotion, setDetailEmotion] = useState([]);
+  const accessToken = useAuthStore((state) => state.accessToken);
+
+  const location = useLocation();
+  const { id } = location.state || {};
+
   const { year, month, day } = useParams();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
+  const emotionTitle = {
+    1: ["열정", "#3BE780"],
+    2: ["기쁨", "#F9E44A"],
+    3: ["감동", "#F667AC"],
+    4: ["불안", "#9250FC"],
+    5: ["버럭", "#E14C4C"],
+    6: ["슬픔", "#5B75FF"],
+    7: ["슬픔", "#5B75FF"],
+    8: ["슬픔", "#5B75FF"],
+  };
   const handleInfoClick = () => {
     navigate("/emotionInfo");
   };
+
+  useEffect(() => {
+    const fetchDetailData = async () => {
+      if (!id) return;
+      try {
+        const response = await api.get(`/api/v1/diaries/${id}`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        if (response.data) {
+          console.log(response.data.data);
+          setDetailData(response.data.data);
+          setDetailEmotion(response.data.data.emotion_reacts);
+          console.log(response.data.data.emotion_reacts);
+        } else {
+          console.error("Unexpected response structure:", response.data.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          console.error("에러 코드:", error.response.status);
+          console.error("에러 메시지:", error.response.data);
+        } else if (error.request) {
+          console.error("서버로부터 응답이 없습니다.", error.request);
+        } else {
+          console.error("요청 설정 중 오류가 발생했습니다.", error.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDetailData();
+  }, [id]);
+  if (isLoading) {
+    return (
+      <Container>
+        <NavBarArrow to="/calendar" />
+        <Title>일단 로딩중</Title>
+      </Container>
+    );
+  }
+  const chosenEmotion = DetailEmotion.find(
+    (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id
+  );
+
+  const otherEmotions = DetailEmotion.filter(
+    (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id
+  )
+    .sort((a, b) => b.percent - a.percent)
+    .slice(0, 2);
 
   return (
     <Container>
@@ -151,14 +199,18 @@ const DailyDiaryPage = () => {
 
       <Title>
         {year}년 {month}월 {day}일에는 <br />
-        <EmotionColor color="var(--Yellow-01, #F9E44A)">기쁨</EmotionColor>,
-        <EmotionColor color="var(--Blue-01, #5B75FF)" className="joy">
-          &nbsp; 슬픔
+        <EmotionColor color={emotionTitle[DetailData.chosen_emotion_id][1]}>
+          {emotionTitle[DetailData.chosen_emotion_id][0]}
         </EmotionColor>
         ,
-        <EmotionColor color="var(--Green-01, #3BE780)" className="joy">
-          &nbsp; 열정
-        </EmotionColor>
+        {otherEmotions.map((emotion, index) => (
+          <React.Fragment key={index}>
+            {index > 0 && ","}
+            <EmotionColor color={emotionTitle[emotion.emotion_id][1]}>
+              &nbsp; {emotionTitle[emotion.emotion_id][0]}
+            </EmotionColor>
+          </React.Fragment>
+        ))}
         이 찾아왔어요!
       </Title>
       <Info>
@@ -166,41 +218,29 @@ const DailyDiaryPage = () => {
         <InfoText onClick={handleInfoClick}>감정이가 궁금해요</InfoText>
       </Info>
 
-      <Text>
-        오늘은 정말 특별한 날이었어! 친구들이랑 놀이공원에 갔거든 ㅎㅎ 기대하던
-        롤러코스터도 타고, 날씨도 너무 좋았어😆 근데 집가는 길에 비가 쏟아져서..
-        편의점에서 우산을 샀어ㅠ 내 돈.......
-      </Text>
+      <Text>{DetailData.content}</Text>
 
       <TextDescription>가장 인상 깊었던 감정이에요</TextDescription>
-      <EmotionComment
-        height="100px"
-        emotion="sad"
-        imgPosition={{ right: "-40px" }}
-        padding="20px 55px 20px 20px"
-      >
-        아 완벽한 하루가 될 뻔 했는데.. 비가 쏟아진게 슬프다.. 비오면 마음도..
-        축축..해지는데.. 신발도 다 젖었겠네..
-      </EmotionComment>
+      {chosenEmotion && (
+        <EmotionComment
+          emotionId={chosenEmotion.emotion_id}
+          imgPosition={{ right: "-40px" }}
+          padding="20px 55px 20px 30px"
+        >
+          {chosenEmotion.content}
+        </EmotionComment>
+      )}
       <TextDescriptionSecond>다른 감정들도 살펴볼까요? </TextDescriptionSecond>
       <OtherEmotionWrp>
-        <EmotionComment
-          height="60px"
-          emotion="passion"
-          imgPosition={{ left: "-40px" }}
-        >
-          우산쓰고 열심히 집 도착한 열정칭찬해🔥
-        </EmotionComment>
-
-        {/* 마지막 컴포넌트는 margin-bottom 이 27px 이어야함  */}
-        <EmotionComment
-          height="120px"
-          emotion="joy"
-          imgPosition={{ left: "-40px" }}
-        >
-          놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건 아쉽지만..
-          놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고 생각해 ㅎㅎ
-        </EmotionComment>
+        {otherEmotions.map((emotion, index) => (
+          <EmotionComment
+            key={index}
+            emotionId={emotion.emotion_id}
+            imgPosition={{ left: "-40px" }}
+          >
+            {emotion.content}
+          </EmotionComment>
+        ))}
       </OtherEmotionWrp>
     </Container>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import NavBarArrow from "./NavbarArrow";
@@ -11,9 +11,9 @@ import EmotionPassion from "./../assets/images/emotionPassion.svg";
 import EmotionAnxiety from "./../assets/images/emotionAnxiety.svg";
 import EmotionSad from "./../assets/images/emotionSad.svg";
 import EmotionJoy from "./../assets/images/emotionJoy.svg";
-
 import SubmitButton from "./Btn";
-
+import api from "./../utils/api";
+import useAuthStore from "../stores/authStore";
 const CalendarContainer = styled.div`
   margin: 0 auto;
   background-color: var(--Black-03, #1a1a1a);
@@ -77,7 +77,6 @@ const Day = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   text-align: left;
-
   cursor: pointer;
   width: 111px;
   height: 122px;
@@ -121,9 +120,50 @@ const DayImageRight = styled.div`
 `;
 
 const Calendar = () => {
+  const accessToken = useAuthStore((state) => state.accessToken);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [emotionData, setEmotionData] = useState([]);
   const today = new Date();
   const navigate = useNavigate();
+
+  const getYYMM = (date) => {
+    const year = date.getFullYear().toString();
+    const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    return `${year}${month}`;
+  };
+
+  useEffect(() => {
+    const fetchEmotionData = async () => {
+      const yymm = getYYMM(currentDate);
+      try {
+        const response = await api.get(
+          `/api/v1/diaries/?search_date_yymm=${yymm}`,
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (response.data) {
+          console.log(response.data.data.diaries);
+          setEmotionData(response.data.data.diaries);
+        } else {
+          console.error("Unexpected response structure:", response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          console.error("에러 코드:", error.response.status);
+          console.error("에러 메시지:", error.response.data);
+        } else if (error.request) {
+          console.error("서버로부터 응답이 없습니다.", error.request);
+        } else {
+          console.error("요청 설정 중 오류가 발생했습니다.", error.message);
+        }
+      }
+    };
+
+    fetchEmotionData();
+  }, [currentDate]);
 
   const goToMonthCard = () => {
     navigate("/monthcard");
@@ -152,7 +192,31 @@ const Calendar = () => {
   };
 
   const handleDayClick = (year, month, day) => {
-    navigate(`/diary/${year}/${month}/${day}`);
+    const emotion = emotionData.find(
+      (e) => new Date(e.created_datetime).getDate() === day
+    );
+    navigate(`/diary/${year}/${month}/${day}`, {
+      state: { id: emotion?.id },
+    });
+  };
+
+  const getEmotionImage = (emotion) => {
+    switch (emotion) {
+      case "열정이":
+        return EmotionPassion;
+      case "불안이":
+        return EmotionAnxiety;
+      case "슬픔이":
+        return EmotionSad;
+      case "기쁨이":
+        return EmotionJoy;
+      case "버럭이":
+        return EmotionAnger;
+      case "감동이":
+        return EmotionMoved;
+      default:
+        return null;
+    }
   };
 
   const renderDays = () => {
@@ -166,6 +230,16 @@ const Calendar = () => {
         year === today.getFullYear() &&
         month === today.getMonth() &&
         day === today.getDate();
+
+      const emotion = emotionData.find((e) => {
+        const date = new Date(e.created_datetime);
+        return (
+          date.getFullYear() === year &&
+          date.getMonth() === month &&
+          date.getDate() === day
+        );
+      });
+      console.log(emotion);
       days.push(
         <Day
           key={day}
@@ -180,49 +254,14 @@ const Calendar = () => {
               <img src={DaySplitbar} alt="day splitbar" />
             </DayImageLeft>
             <DayImageRight>
-              {day % 6 === 0 ? (
+              {emotion ? (
                 <img
-                  src={EmotionMoved}
-                  alt="emotion moved"
+                  src={getEmotionImage(emotion.chosen_emotion)}
+                  alt="emotion"
                   width={64}
                   height={64}
                 />
-              ) : day % 6 === 1 ? (
-                <img
-                  src={EmotionAnger}
-                  alt="emotion moved"
-                  width={64}
-                  height={64}
-                />
-              ) : day % 6 === 2 ? (
-                <img
-                  src={EmotionPassion}
-                  alt="emotion moved"
-                  width={64}
-                  height={64}
-                />
-              ) : day % 6 === 3 ? (
-                <img
-                  src={EmotionAnxiety}
-                  alt="emotion moved"
-                  width={64}
-                  height={64}
-                />
-              ) : day % 6 === 4 ? (
-                <img
-                  src={EmotionSad}
-                  alt="emotion moved"
-                  width={64}
-                  height={64}
-                />
-              ) : (
-                <img
-                  src={EmotionJoy}
-                  alt="emotion moved"
-                  width={64}
-                  height={64}
-                />
-              )}
+              ) : null}
             </DayImageRight>
           </DayBottom>
         </Day>
@@ -230,6 +269,16 @@ const Calendar = () => {
     }
 
     return days;
+  };
+
+  const isCurrentOrNextMonth = () => {
+    const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    return (
+      (today.getFullYear() === currentDate.getFullYear() &&
+        today.getMonth() === currentDate.getMonth()) ||
+      (nextMonth.getFullYear() === currentDate.getFullYear() &&
+        nextMonth.getMonth() === currentDate.getMonth())
+    );
   };
 
   return (
@@ -248,9 +297,11 @@ const Calendar = () => {
         </SubTitleArea>
       </Header>
       <DaysContainer>{renderDays()}</DaysContainer>
-      <SubmitButton onClick={goToMonthCard}>
-        이달의 감정 카드 확인하기
-      </SubmitButton>
+      {!isCurrentOrNextMonth() && (
+        <SubmitButton onClick={goToMonthCard}>
+          이달의 감정 카드 확인하기
+        </SubmitButton>
+      )}
     </CalendarContainer>
   );
 };

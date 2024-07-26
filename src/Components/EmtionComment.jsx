@@ -9,41 +9,8 @@ import emotionMoved from "./../assets/images/emotionMoved.svg";
 import emotionPassion from "./../assets/images/emotionPassion.svg";
 import emotionSad from "./../assets/images/emotionSad.svg";
 
-const images = {
-  anger: emotionAnger,
-  anxiety: emotionAnxiety,
-  joy: emotionJoy,
-  moved: emotionMoved,
-  passion: emotionPassion,
-  sad: emotionSad,
-};
-
-const EmotionImg = styled.img`
-  height: ${(props) => props.height || "auto"};
-  position: absolute;
-  left: ${(props) => props.left || "auto"};
-  right: ${(props) => props.right || "auto"};
-`;
-
-const TextEmotionContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: ${(props) => props.padding || "20px 20px 20px 55px"};
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-`;
-
-const Text = styled.p`
-  color: var(--White-01, #f4f4f4);
-  margin: 0;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: ${(props) => (props.isSelected ? "500" : "400")};
-  line-height: 140%; /* 19.6px */
-  letter-spacing: -0.28px;
-`;
-
 const EmotionCommentWrp = styled.div`
+  width: 294px;
   background-color: ${(props) =>
     props.isSelected
       ? props.emotion === "joy"
@@ -55,8 +22,6 @@ const EmotionCommentWrp = styled.div`
             : " #333"
       : " #333"};
   position: relative;
-  width: 294px;
-  height: ${(props) => props.height || "230px"};
   flex-shrink: 0;
   border-radius: 46px 20px 20px 15px;
   margin-bottom: 24px;
@@ -65,7 +30,31 @@ const EmotionCommentWrp = styled.div`
   cursor: pointer;
 `;
 
+const EmotionImg = styled.img`
+  height: 80px;
+  position: absolute;
+  ${(props) => (props.left ? `left: ${props.left};` : "")}
+  ${(props) => (props.right ? `right: ${props.right};` : "")}
+`;
+
+const TextEmotionContainer = styled.div`
+  padding: ${(props) => props.padding || "20px 20px 20px 55px"};
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+`;
+
+const Text = styled.p`
+  color: var(--White-01, #f4f4f4);
+  margin: 0;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%; /* 19.6px */
+  letter-spacing: -0.28px;
+`;
+
 const EmotionComment = ({
+  emotionId,
   emotion,
   isSelected,
   height,
@@ -74,7 +63,27 @@ const EmotionComment = ({
   children,
   onClick,
 }) => {
-  const imageSrc = images[emotion];
+  const imagesById = {
+    1: emotionPassion,
+    2: emotionJoy,
+    3: emotionMoved,
+    4: emotionAnxiety,
+    5: emotionAnger,
+    6: emotionSad,
+  };
+
+  const imagesByName = {
+    anger: emotionAnger,
+    anxiety: emotionAnxiety,
+    joy: emotionJoy,
+    moved: emotionMoved,
+    passion: emotionPassion,
+    sad: emotionSad,
+  };
+
+  const emotionImage = emotionId
+    ? imagesById[emotionId]
+    : imagesByName[emotion];
 
   return (
     <EmotionCommentWrp
@@ -83,7 +92,7 @@ const EmotionComment = ({
       height={height}
       onClick={onClick}
     >
-      <EmotionImg height="80px" src={imageSrc} {...imgPosition} />
+      <EmotionImg height="80px" src={emotionImage} {...imgPosition} />
       <TextEmotionContainer padding={padding}>
         <Text isSelected={isSelected}>{children}</Text>
       </TextEmotionContainer>
