@@ -7,6 +7,7 @@ import { ReactComponent as PassionSvg } from "../../assets/images/passion_noeye.
 import { ReactComponent as SadnessSvg } from "../../assets/images/sadness_noeye.svg";
 import { ReactComponent as ClearIcon } from "../../assets/images/inputClear.svg";
 import api from "../../utils/api";
+import useAuthStore from "../../stores/authStore";
 
 const PageContainer = styled.div`
   margin: 0 auto;
@@ -148,6 +149,7 @@ const RegisterForm = () => {
   const [nickname, setNickname] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const setNicknameOnStore = useAuthStore((state) => state.setNickname);
 
   const validateNickname = useCallback((name) => {
     const forbiddenWords = ["관리자", "admin", "운영자", "tlqkf"]; // 금지어 목록
@@ -187,6 +189,10 @@ const RegisterForm = () => {
         nickname: nickname,
       });
 
+      if (response.status === 200) {
+        setNicknameOnStore(nickname);
+      }
+
       console.log(response.data);
     } catch (error) {
       console.error("Failed to fetch user profile", error);
@@ -197,6 +203,7 @@ const RegisterForm = () => {
     if (isNicknameValid) {
       try {
         await updateUserProfile();
+
         navigate("/diary");
       } catch (error) {
         console.error("Failed to update nickname", error);

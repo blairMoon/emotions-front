@@ -19,6 +19,10 @@ const useAuthStore = create(
         set({ accessToken: null });
         delete api.defaults.headers.common["Authorization"];
       },
+      setNickname: (nickname) => {
+        set({ nickname });
+      },
+      nickname: "",
     }),
     {
       name: "auth-storage", // 스토리지에 저장될 때 사용할 키 이름

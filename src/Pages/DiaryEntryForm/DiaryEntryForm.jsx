@@ -6,6 +6,8 @@ import styled from "styled-components";
 import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
 import InfoIcon from "../../assets/images/info.svg";
+import api from "../../utils/api";
+import DiaryLoading from "../../Components/DiaryLoading";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -153,6 +155,7 @@ const SubmitButton = styled.button`
 
 const DairyEntryForm = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -163,9 +166,28 @@ const DairyEntryForm = () => {
   const diaryEntry = watch("diaryEntry", "");
   const [isDisabled, setIsDisabled] = useState(true);
 
-  const onSubmit = (data) => {
-    console.log(data);
-    navigate("/emotionResult");
+  const onSubmit = async (data) => {
+    setLoading(true);
+
+    try {
+      const response = await api.post(`/api/v1/diaries/`, {
+        content: data.diaryEntry,
+      });
+
+      console.log(response.data);
+
+      if (response.status === 201) {
+        navigate("/emotionResult", {
+          state: {
+            result: response.data,
+          },
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getCurrentDate = () => {
@@ -183,6 +205,10 @@ const DairyEntryForm = () => {
   useEffect(() => {
     setIsDisabled(diaryEntry.length === 0 || diaryEntry.length > 300);
   }, [diaryEntry]);
+
+  if (loading) {
+    return <DiaryLoading />;
+  }
 
   return (
     <Container>
