@@ -1,3 +1,5 @@
+// src/pages/EmotionResultPage.js
+
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +11,10 @@ import emotionJoy from "../../assets/images/emotionJoy.svg";
 import emotionPassion from "../../assets/images/emotionPassion.svg";
 import SubmitButton from "../../Components/Btn";
 import Modal from "../../Components/Modal";
+import EmotionComment from "./../../Components/EmtionComment";
+const EmotionColor = styled.span`
+  color: ${(props) => props.color || "black"};
+`;
 
 const Container = styled.div`
   margin: 0 auto;
@@ -45,17 +51,6 @@ const SubTitle = styled.div`
   margin-bottom: 24px;
 `;
 
-const EmotionImg = styled.img`
-  height: ${(props) => props.height || "auto"};
-  position: absolute;
-  left: ${(props) => props.left || "auto"};
-  right: ${(props) => props.right || "auto"};
-`;
-
-const EmotionColor = styled.span`
-  color: ${(props) => props.color || "black"};
-`;
-
 const EmotionsWrp = styled.div`
   width: 100%;
   display: flex;
@@ -70,47 +65,6 @@ const ParentWrapper = styled.div`
   justify-content: ${(props) => props.justifyContent || "flex-start"};
 `;
 
-const TextEmotionContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: ${(props) => props.padding || "20px 20px 20px 55px"};
-
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-`;
-
-const EmotionCommentWrp = styled.div`
-  background-color: ${(props) =>
-    props.isSelected
-      ? props.emotion === "joy"
-        ? "rgba(249, 228, 74, 0.16)"
-        : props.emotion === "sad"
-          ? "#262B46"
-          : props.emotion === "passion"
-            ? "rgba(59, 231, 128, 0.12)"
-            : " #333"
-      : " #333"};
-  position: relative;
-  width: 294px;
-  height: ${(props) => props.height || "230px"};
-  flex-shrink: 0;
-  border-radius: 46px 20px 20px 15px;
-
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
-const Text = styled.p`
-  color: var(--White-01, #f4f4f4);
-  margin: 0;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: ${(props) => (props.isSelected ? "500" : "400")};
-  line-height: 140%; /* 19.6px */
-  letter-spacing: -0.28px;
-`;
-
 const EmotionResultPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -119,6 +73,7 @@ const EmotionResultPage = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [currentDate, setCurrentDate] = useState("");
   const navigate = useNavigate();
+
   useEffect(() => {
     setIsButtonDisabled(selectedEmotion === null);
 
@@ -163,52 +118,40 @@ const EmotionResultPage = () => {
 
         <EmotionsWrp>
           <ParentWrapper justifyContent="flex-end">
-            <EmotionCommentWrp
+            <EmotionComment
               height="120px"
               emotion="joy"
               isSelected={selectedEmotion === "joy"}
+              imgPosition={{ left: "-40px" }}
               onClick={() => handleEmotionClick("joy")}
             >
-              <EmotionImg height="79.6px" src={emotionJoy} left="-40px" />
-              <TextEmotionContainer>
-                <Text isSelected={selectedEmotion === "joy"}>
-                  놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건
-                  아쉽지만.. 놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고
-                  생각해 ㅎㅎ
-                </Text>
-              </TextEmotionContainer>
-            </EmotionCommentWrp>
+              놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건 아쉽지만..
+              놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고 생각해 ㅎㅎ
+            </EmotionComment>
           </ParentWrapper>
           <ParentWrapper justifyContent="flex-start">
-            <EmotionCommentWrp
+            <EmotionComment
               height="100px"
               emotion="sad"
               isSelected={selectedEmotion === "sad"}
+              imgPosition={{ right: "-40px" }}
+              padding="20px 55px 20px 20px"
               onClick={() => handleEmotionClick("sad")}
             >
-              <EmotionImg height="80px" src={emotionSad} right="-40px" />
-              <TextEmotionContainer padding="20px 55px 20px 20px">
-                <Text isSelected={selectedEmotion === "sad"}>
-                  아 완벽한 하루가 될 뻔 했는데.. 비가 쏟아진게 슬프다.. 비오면
-                  마음도.. 축축..해지는데.. 신발도 다 젖었겠네..
-                </Text>
-              </TextEmotionContainer>
-            </EmotionCommentWrp>
+              아 완벽한 하루가 될 뻔 했는데.. 비가 쏟아진게 슬프다.. 비오면
+              마음도.. 축축..해지는데.. 신발도 다 젖었겠네..
+            </EmotionComment>
           </ParentWrapper>
           <ParentWrapper justifyContent="flex-end">
-            <EmotionCommentWrp
+            <EmotionComment
               height="60px"
               emotion="passion"
               isSelected={selectedEmotion === "passion"}
+              imgPosition={{ left: "-30px" }}
               onClick={() => handleEmotionClick("passion")}
             >
-              <EmotionImg height="69px" src={emotionPassion} left="-30px" />
-              <TextEmotionContainer>
-                <Text isSelected={selectedEmotion === "passion"}>
-                  우산쓰고 열심히 집 도착한 열정칭찬해🔥
-                </Text>
-              </TextEmotionContainer>
-            </EmotionCommentWrp>
+              우산쓰고 열심히 집 도착한 열정칭찬해🔥
+            </EmotionComment>
           </ParentWrapper>
         </EmotionsWrp>
         <input type="hidden" name="emotion" />
