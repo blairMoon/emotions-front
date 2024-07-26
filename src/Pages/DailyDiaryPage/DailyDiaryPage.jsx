@@ -7,6 +7,7 @@ import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
 import InfoIcon from "../../assets/images/info.svg";
 import EmotionComment from "../../Components/EmtionComment";
+
 const Container = styled.div`
   margin: 0 auto;
   background-color: #1a1a1a;
@@ -16,6 +17,8 @@ const Container = styled.div`
   padding: 0 20px 0 20px;
   height: calc(var(--vh, 1vh) * 100);
   width: 100%;
+  overflow: scroll;
+  scrollbar-width: none;
 `;
 
 const DateDisplay = styled.div`
@@ -109,7 +112,9 @@ const ImgContainer = styled.div`
     filter: blur(5px); /* 이미지에 블러 효과 적용 */
   }
 `;
-
+const EmotionColor = styled.span`
+  color: ${(props) => props.color || "black"};
+`;
 const TextDescription = styled.span`
   margin-top: 36px;
   margin-bottom: 18px;
@@ -122,6 +127,15 @@ const TextDescription = styled.span`
   letter-spacing: -0.32px;
 `;
 
+const TextDescriptionSecond = styled(TextDescription)`
+  margin-top: 6px;
+`;
+
+const OtherEmotionWrp = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
 const DailyDiaryPage = () => {
   const { year, month, day } = useParams();
   const navigate = useNavigate();
@@ -138,7 +152,16 @@ const DailyDiaryPage = () => {
       </ImgContainer>
       <DateDisplay></DateDisplay>
       <Title>
-        오늘은 어떤 감정들이 <br /> 나타날까요?
+        {year}년 {month}월 {day}일에는 <br />
+        <EmotionColor color="var(--Yellow-01, #F9E44A)">기쁨</EmotionColor>,
+        <EmotionColor color="var(--Blue-01, #5B75FF)" className="joy">
+          &nbsp; 슬픔
+        </EmotionColor>
+        ,
+        <EmotionColor color="var(--Green-01, #3BE780)" className="joy">
+          &nbsp; 열정
+        </EmotionColor>
+        이 찾아왔어요!
       </Title>
       <Info>
         <img src={InfoIcon} alt="info" />
@@ -161,21 +184,26 @@ const DailyDiaryPage = () => {
         아 완벽한 하루가 될 뻔 했는데.. 비가 쏟아진게 슬프다.. 비오면 마음도..
         축축..해지는데.. 신발도 다 젖었겠네..
       </EmotionComment>
-      <EmotionComment
-        height="60px"
-        emotion="passion"
-        imgPosition={{ left: "-30px" }}
-      >
-        우산쓰고 열심히 집 도착한 열정칭찬해🔥
-      </EmotionComment>
-      <EmotionComment
-        height="120px"
-        emotion="joy"
-        imgPosition={{ left: "-40px" }}
-      >
-        놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건 아쉽지만..
-        놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고 생각해 ㅎㅎ
-      </EmotionComment>
+      <TextDescriptionSecond>다른 감정들도 살펴볼까요? </TextDescriptionSecond>
+      <OtherEmotionWrp>
+        <EmotionComment
+          height="60px"
+          emotion="passion"
+          imgPosition={{ left: "-40px" }}
+        >
+          우산쓰고 열심히 집 도착한 열정칭찬해🔥
+        </EmotionComment>
+
+        {/* 마지막 컴포넌트는 margin-bottom 이 27px 이어야함  */}
+        <EmotionComment
+          height="120px"
+          emotion="joy"
+          imgPosition={{ left: "-40px" }}
+        >
+          놀이공원이라니, 너무 재밌었겠다! 마지막에 비가 온 건 아쉽지만..
+          놀이공원에서의 날씨는 완벽했으니까! 럭키비키라고 생각해 ㅎㅎ
+        </EmotionComment>
+      </OtherEmotionWrp>
     </Container>
   );
 };
