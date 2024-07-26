@@ -15,21 +15,16 @@ const NavList = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  text-decoration: none;
-  font-weight: bold;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+  height: 24px;
 `;
 
 const CenterText = styled.div`
   color: var(--White-01, #f4f4f4);
   text-align: center;
-  /* Title/pre-bold I 18px */
   font-family: Pretendard;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
-  line-height: normal;
   letter-spacing: -0.36px;
 `;
 
