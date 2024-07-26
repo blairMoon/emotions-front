@@ -230,7 +230,7 @@ const Calendar = () => {
 
   return (
     <CalendarContainer>
-      <NavBarArrow />
+      <NavBarArrow to="/diary" />
       <Header>
         <TitleArea>
           <Title>포텐님의 감정 캘린더에요</Title>

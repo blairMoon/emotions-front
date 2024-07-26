@@ -29,7 +29,8 @@ const NaverCallback = () => {
           return;
         }
 
-        navigate("/diary");
+        // navigate("/diary");
+        navigate("/email-check");
       } catch (error) {
         console.error("Login failed", error);
         alert("로그인에 실패했어요. 다시 시도해주세요.");

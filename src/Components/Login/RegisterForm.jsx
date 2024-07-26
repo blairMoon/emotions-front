@@ -9,18 +9,22 @@ import { ReactComponent as ClearIcon } from "../../assets/images/inputClear.svg"
 import api from "../../utils/api";
 
 const PageContainer = styled.div`
+  margin: 0 auto;
+  background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
+  position: relative;
+  padding: 0 20px 0 20px;
+  height: calc(var(--vh, 1vh) * 100);
+  width: 100%;
   color: #f4f4f4;
-  padding: 0 20px;
-  justify-content: space-between;
-  background-color: #1a1a1a;
 `;
 
 const TopSection = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 68px;
+  margin-bottom: 130px;
 `;
 
 const WelcomeMessage = styled.h1`
@@ -35,13 +39,10 @@ const WelcomeMessage = styled.h1`
 const EmoticonContainer = styled.div`
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 40px;
   gap: 8px;
 `;
 
-const NicknameSection = styled.div`
-  margin-bottom: 20px;
-`;
+const NicknameSection = styled.div``;
 
 const NicknameLabel = styled.label`
   display: block;
@@ -116,6 +117,12 @@ const ErrorMessage = styled.p`
 `;
 
 const NextButton = styled.button`
+  width: 100%;
+  max-width: 335px;
+  height: 65px;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: 20px;
   background-color: #101010;
   color: #f4f4f4;
   border: none;

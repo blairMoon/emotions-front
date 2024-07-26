@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import NavBar from "../../Components/NavBar";
 import ellipse from "../../assets/images/Ellipse2820.svg";
+import InfoIcon from "../../assets/images/info.svg";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -33,12 +34,32 @@ const Title = styled.div`
   position: relative;
   z-index: 2;
   color: var(--White-01, #f4f4f4);
-  margin-bottom: 72px;
+  margin-bottom: 12px;
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: 38px;
   letter-spacing: -0.48px;
+`;
+
+const Info = styled.div`
+  margin-bottom: 38px;
+  display: flex;
+  align-items: center;
+`;
+
+const InfoText = styled.span`
+  padding-left: 4px;
+  color: #cbcbcb;
+  font-family: SUIT;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.28px;
+  text-decoration-line: underline;
+  cursor: pointer;
+  z-index: 2;
 `;
 
 const TextArea = styled.textarea`
@@ -155,6 +176,10 @@ const DairyEntryForm = () => {
     return ` ${month}월 ${day}일`;
   };
 
+  const handleInfoClick = () => {
+    navigate("/emotionInfo");
+  };
+
   useEffect(() => {
     setIsDisabled(diaryEntry.length === 0 || diaryEntry.length > 300);
   }, [diaryEntry]);
@@ -169,6 +194,10 @@ const DairyEntryForm = () => {
       <Title>
         오늘은 어떤 감정들이 <br /> 나타날까요?
       </Title>
+      <Info>
+        <img src={InfoIcon} alt="info" />
+        <InfoText onClick={handleInfoClick}>감정이가 궁금해요</InfoText>
+      </Info>
 
       <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
         <TextArea

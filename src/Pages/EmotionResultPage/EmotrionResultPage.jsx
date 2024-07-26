@@ -146,7 +146,7 @@ const EmotionResultPage = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ height: "100%" }}>
       <Container>
-        <NavBarArrow />
+        <NavBarArrow to="/diary" />
         <Title>
           <EmotionColor color="var(--Yellow-01, #F9E44A)">기쁨</EmotionColor>,
           <EmotionColor color="var(--Blue-01, #5B75FF)" className="joy">

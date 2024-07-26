@@ -75,7 +75,7 @@ const SettingsPage = () => {
 
   return (
     <Container>
-      <NavBarArrow />
+      <NavBarArrow text="설정" to="/diary" />
       <SettingsWrp>
         <SettingItem>
           <SettingText>서비스 알림 허용</SettingText>

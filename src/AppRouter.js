@@ -9,6 +9,7 @@ import EmailCheck from "./Components/Login/EmailCheck";
 import RegisterForm from "./Components/Login/RegisterForm";
 import EmotionResultPage from "./Pages/EmotionResultPage/EmotrionResultPage";
 import SettingPage from "./Pages/SettingPage/SettingPage";
+import EmotionInfo from "./Pages/EmotionInfo/EmotionInfo";
 
 const AppRouter = () => {
   function setScreenSize() {
@@ -36,6 +37,7 @@ const AppRouter = () => {
       <Route path="/emotionResult" element={<EmotionResultPage />} />
       {/* 설정  */}
       <Route path="/setting" element={<SettingPage />} />
+      <Route path="/emotionInfo" element={<EmotionInfo />} />
     </Routes>
   );
 };
