@@ -204,8 +204,6 @@ const DailyDiaryPage = () => {
       <TextDescription>가장 인상 깊었던 감정이에요</TextDescription>
       {finalChosenEmotion && (
         <EmotionComment
-          isSelected={true}
-          emotion={emotionMap[chosenEmotion.emotion_id]}
           emotionId={finalChosenEmotion.emotion_id}
           imgPosition={{ right: "-40px" }}
           padding="20px 55px 20px 30px"
