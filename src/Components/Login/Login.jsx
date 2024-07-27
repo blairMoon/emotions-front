@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigateExternal } from "../../hooks/useNavigateExternal";
-
+import { useEffect } from "react";
 import { ReactComponent as NaverIcon } from "../../assets/images/nLogo.svg";
 import styled from "styled-components";
 import { ReactComponent as KakaoIcon } from "../../assets/images/kakao.svg";
@@ -72,7 +72,7 @@ const Login = () => {
   const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID || "";
   const naverRedirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI || "";
   const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID || "";
-  const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI || "";
+  const kakaoRedirectUri = "http://localhost:3000/kakao-callback";
 
   const generateRandomString = (length) => {
     const characters =

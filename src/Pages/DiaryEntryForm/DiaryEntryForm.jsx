@@ -9,6 +9,8 @@ import InfoIcon from "../../assets/images/info.svg";
 import api from "../../utils/api";
 import DiaryLoading from "../../Components/DiaryLoading";
 import useAuthStore from "../../stores/authStore";
+import CuteAlert from "../../Components/CuteAlert";
+import GlobalLoading from "../../Components/GlobalLoading";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -109,7 +111,7 @@ const ImgContainer = styled.div`
     width: 100%;
     height: auto;
     object-fit: cover;
-    filter: blur(5px); /* 이미지에 블러 효과 적용 */
+    // filter: blur(2px);
   }
 `;
 
@@ -183,6 +185,11 @@ const DairyEntryForm = () => {
   const accessToken = useAuthStore((state) => state.accessToken);
   const [topEmotions, setTopEmotions] = useState([]);
   const [diaryData, setDiaryData] = useState(null);
+  const [showAlert, setShowAlert] = useState(false);
+  const [loadingRender, setLoadingRender] = useState(false);
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+  };
 
   const {
     register,
@@ -208,10 +215,8 @@ const DairyEntryForm = () => {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        },
+        }
       );
-
-      console.log(response.data);
 
       if (response.status === 201) {
         navigate("/emotionResult", {
@@ -222,6 +227,14 @@ const DairyEntryForm = () => {
       }
     } catch (error) {
       console.error(error);
+      if (
+        error.response &&
+        (error.response.status === 400 || error.response.status === 500)
+      ) {
+        setShowAlert(true);
+      } else {
+        setShowAlert(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -230,7 +243,7 @@ const DairyEntryForm = () => {
   const getCurrentDate = () => {
     const today = new Date();
 
-    const month = today.getMonth() + 1; // 월은 0부터 시작하므로 1을 더합니다.
+    const month = today.getMonth() + 1;
     const day = today.getDate();
     return ` ${month}월 ${day}일`;
   };
@@ -241,6 +254,7 @@ const DairyEntryForm = () => {
 
   useEffect(() => {
     const fetchTodayDiary = async () => {
+      setLoadingRender(true);
       try {
         const response = await api.get("/api/v1/diaries/today", {
           headers: {
@@ -252,13 +266,14 @@ const DairyEntryForm = () => {
           setDiaryData(response.data.data);
         }
       } catch (error) {
-        console.error("Failed to fetch today's diary:", error);
+        setShowAlert(true);
+      } finally {
+        setLoadingRender(false);
       }
     };
 
     fetchTodayDiary();
   }, [accessToken]);
-
   const processedDiaryData = useMemo(() => {
     if (!diaryData) return null;
 
@@ -292,7 +307,9 @@ const DairyEntryForm = () => {
   if (loading) {
     return <DiaryLoading />;
   }
-
+  if (loadingRender) {
+    return <GlobalLoading />;
+  }
   return (
     <Container>
       <NavBar />
@@ -334,7 +351,7 @@ const DairyEntryForm = () => {
               message: "일기는 300자 이하로 작성해 주세요.",
             },
           })}
-          placeholder="오늘 하루를 기록해주세요!"
+          placeholder="오늘 하루를 기록해주세요! <br/> (* 의미 없는 문구나 너무 짧은 문장은 감정이들의 분석이 어려워요!"
           readOnly={!canCreate}
         />
         {errors.diaryEntry && (
@@ -352,6 +369,7 @@ const DairyEntryForm = () => {
           {canCreate ? "오늘의 감정 만나러 가기" : "내일 다시 만나요!"}
         </SubmitButton>
       </form>
+      {showAlert && <CuteAlert onClose={handleCloseAlert} />}
     </Container>
   );
 };

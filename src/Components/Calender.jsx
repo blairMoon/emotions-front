@@ -135,6 +135,7 @@ const DayImageRight = styled.div`
 `;
 
 const Calendar = () => {
+  const [loading, setLoading] = useState(false);
   const { accessToken, nickname } = useAuthStore((state) => state);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [emotionData, setEmotionData] = useState([]);
@@ -149,6 +150,7 @@ const Calendar = () => {
 
   useEffect(() => {
     const fetchEmotionData = async () => {
+      setLoading(true);
       const yymm = getYYMM(currentDate);
       try {
         const response = await api.get(
@@ -157,7 +159,7 @@ const Calendar = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
-          },
+          }
         );
         if (response.data) {
           console.log(response.data.data.diaries);
@@ -174,6 +176,8 @@ const Calendar = () => {
         } else {
           console.error("요청 설정 중 오류가 발생했습니다.", error.message);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -215,7 +219,7 @@ const Calendar = () => {
 
   const handleDayClick = (year, month, day) => {
     const emotion = emotionData.find(
-      (e) => new Date(e.created_datetime).getDate() === day,
+      (e) => new Date(e.created_datetime).getDate() === day
     );
     if (emotion) {
       navigate(`/diary/${year}/${month}/${day}`, {
@@ -291,21 +295,25 @@ const Calendar = () => {
               ) : null}
             </DayImageRight>
           </DayBottom>
-        </Day>,
+        </Day>
       );
     }
 
     return days;
   };
 
-  const isCurrentOrNextMonth = () => {
+  const isCurrentOrNextMonthOrNoData = () => {
     const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-    return (
-      (today.getFullYear() === currentDate.getFullYear() &&
-        today.getMonth() === currentDate.getMonth()) ||
-      (nextMonth.getFullYear() === currentDate.getFullYear() &&
-        nextMonth.getMonth() === currentDate.getMonth())
-    );
+    const isCurrentMonth =
+      today.getFullYear() === currentDate.getFullYear() &&
+      today.getMonth() === currentDate.getMonth();
+    const isNextMonth =
+      nextMonth.getFullYear() === currentDate.getFullYear() &&
+      nextMonth.getMonth() === currentDate.getMonth();
+
+    const hasNoEmotionData = emotionData.length === 0;
+
+    return isCurrentMonth || isNextMonth || hasNoEmotionData || loading;
   };
 
   return (
@@ -324,7 +332,10 @@ const Calendar = () => {
         </SubTitleArea>
       </Header>
       <DaysContainer>{renderDays()}</DaysContainer>
-      <SubmitButton onClick={goToMonthCard} disabled={isCurrentOrNextMonth()}>
+      <SubmitButton
+        onClick={goToMonthCard}
+        disabled={isCurrentOrNextMonthOrNoData()}
+      >
         이달의 감정 카드 확인하기
       </SubmitButton>
     </CalendarContainer>

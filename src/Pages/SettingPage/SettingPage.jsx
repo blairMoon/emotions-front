@@ -68,8 +68,13 @@ const LogoutButton = styled.button`
 const SettingsPage = () => {
   const navigate = useNavigate();
   const clearToken = useAuthStore((state) => state.clearToken);
+
   const handleLogout = () => {
+    localStorage.removeItem("auth-storage");
+    localStorage.removeItem("user_email");
+
     clearToken();
+
     navigate("/");
   };
 
