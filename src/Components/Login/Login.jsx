@@ -74,8 +74,18 @@ const Login = () => {
   const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID || "";
   const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI || "";
 
-  // TODO: CSRF 방지를 위한 랜덤한 문자열 생성
-  const state = "RANDOM_STATEsdsddsds";
+  const generateRandomString = (length) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
+  const state = generateRandomString(16) || "";
 
   const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=${naverRedirectUri}&state=${state}`;
   const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}&state=${state}`;
