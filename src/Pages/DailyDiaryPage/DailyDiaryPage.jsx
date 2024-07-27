@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, useParams, useForm } from "react-router-dom";
-import EmotionMoved from "./../../assets/images/emotionMoved.svg";
-import EmotionAnger from "./../../assets/images/emotionAnger.svg";
-import EmotionPassion from "./../../assets/images/emotionPassion.svg";
-import EmotionAnxiety from "./../../assets/images/emotionAnxiety.svg";
-import EmotionSad from "./../../assets/images/emotionSad.svg";
-import EmotionJoy from "./../../assets/images/emotionJoy.svg";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
-import NavBar from "../../Components/NavBar";
-import ellipse from "../../assets/images/Ellipse2820.svg";
-import InfoIcon from "../../assets/images/info.svg";
 import EmotionComment from "../../Components/EmtionComment";
 import NavBarArrow from "../../Components/NavbarArrow";
 import api from "./../../utils/api";
 import useAuthStore from "./../../stores/authStore";
+
 const Container = styled.div`
   margin: 0 auto;
   background-color: #191919;
@@ -31,32 +23,12 @@ const Title = styled.div`
   position: relative;
   z-index: 2;
   color: var(--White-01, #f4f4f4);
-  margin-bottom: 12px;
+  margin-bottom: 36px;
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: 38px;
   letter-spacing: -0.48px;
-`;
-
-const Info = styled.div`
-  margin-bottom: 38px;
-  display: flex;
-  align-items: center;
-`;
-
-const InfoText = styled.span`
-  padding-left: 4px;
-  color: #cbcbcb;
-  font-family: SUIT;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: -0.28px;
-  text-decoration-line: underline;
-  cursor: pointer;
-  z-index: 2;
 `;
 
 const Text = styled.div`
@@ -116,6 +88,15 @@ const OtherEmotionWrp = styled.div`
   align-items: flex-end;
 `;
 
+const emotionMap = {
+  1: "passing",
+  2: "joy",
+  3: "moved",
+  4: "anxiety",
+  5: "anger",
+  6: "sad",
+};
+
 const DailyDiaryPage = () => {
   const [DetailData, setDetailData] = useState([]);
   const [DetailEmotion, setDetailEmotion] = useState([]);
@@ -125,7 +106,6 @@ const DailyDiaryPage = () => {
   const { id } = location.state || {};
 
   const { year, month, day } = useParams();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
   const emotionTitle = {
@@ -137,9 +117,6 @@ const DailyDiaryPage = () => {
     6: ["슬픔", "#5B75FF"],
     7: ["슬픔", "#5B75FF"],
     8: ["슬픔", "#5B75FF"],
-  };
-  const handleInfoClick = () => {
-    navigate("/emotionInfo");
   };
 
   useEffect(() => {
@@ -174,7 +151,7 @@ const DailyDiaryPage = () => {
     };
 
     fetchDetailData();
-  }, [id]);
+  }, [accessToken, id]);
   if (isLoading) {
     return (
       <Container>
@@ -184,11 +161,11 @@ const DailyDiaryPage = () => {
     );
   }
   const chosenEmotion = DetailEmotion.find(
-    (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id
+    (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id,
   );
 
   const otherEmotions = DetailEmotion.filter(
-    (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id
+    (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id,
   )
     .sort((a, b) => b.percent - a.percent)
     .slice(0, 2);
@@ -213,16 +190,14 @@ const DailyDiaryPage = () => {
         ))}
         이 찾아왔어요!
       </Title>
-      <Info>
-        <img src={InfoIcon} alt="info" />
-        <InfoText onClick={handleInfoClick}>감정이가 궁금해요</InfoText>
-      </Info>
 
       <Text>{DetailData.content}</Text>
 
       <TextDescription>가장 인상 깊었던 감정이에요</TextDescription>
       {chosenEmotion && (
         <EmotionComment
+          isSelected={true}
+          emotion={emotionMap[chosenEmotion.emotion_id]}
           emotionId={chosenEmotion.emotion_id}
           imgPosition={{ right: "-40px" }}
           padding="20px 55px 20px 30px"

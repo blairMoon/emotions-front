@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import NavBarArrow from "./NavbarArrow";
@@ -14,6 +14,7 @@ import EmotionJoy from "./../assets/images/emotionJoy.svg";
 import SubmitButton from "./Btn";
 import api from "./../utils/api";
 import useAuthStore from "../stores/authStore";
+
 const CalendarContainer = styled.div`
   margin: 0 auto;
   background-color: var(--Black-03, #1a1a1a);
@@ -77,18 +78,18 @@ const Day = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   text-align: left;
-  cursor: pointer;
+  cursor: ${(props) => (props.emotionExists ? "pointer" : "default")};
   width: 111px;
   height: 122px;
 `;
 
 const DayUpper = styled.div`
   display: flex;
-  color: ${(props) => (props.isToday ? "blue" : "var(--Gray-01, #727272)")};
+  color: ${(props) => (props.isToday ? "#F4F4F4" : "var(--Gray-01, #727272)")};
   font-family: SUIT;
   font-size: 16px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: ${(props) => (props.isToday ? "700" : "600")};
   line-height: normal;
   width: 100%;
   height: 24px;
@@ -142,7 +143,7 @@ const Calendar = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
         if (response.data) {
           console.log(response.data.data.diaries);
@@ -163,7 +164,7 @@ const Calendar = () => {
     };
 
     fetchEmotionData();
-  }, [currentDate]);
+  }, [accessToken, currentDate]);
 
   const goToMonthCard = () => {
     navigate("/monthcard");
@@ -184,6 +185,13 @@ const Calendar = () => {
   };
 
   const handleNextMonth = () => {
+    if (
+      currentDate.getFullYear() === today.getFullYear() &&
+      currentDate.getMonth() === today.getMonth()
+    ) {
+      return;
+    }
+
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
       newDate.setMonth(prevDate.getMonth() + 1);
@@ -193,7 +201,7 @@ const Calendar = () => {
 
   const handleDayClick = (year, month, day) => {
     const emotion = emotionData.find(
-      (e) => new Date(e.created_datetime).getDate() === day
+      (e) => new Date(e.created_datetime).getDate() === day,
     );
     navigate(`/diary/${year}/${month}/${day}`, {
       state: { id: emotion?.id },
@@ -244,7 +252,10 @@ const Calendar = () => {
         <Day
           key={day}
           isToday={isToday}
-          onClick={() => handleDayClick(year, month + 1, day)}
+          onClick={
+            emotion ? () => handleDayClick(year, month + 1, day) : undefined
+          }
+          emotionExists={emotion}
         >
           <DayUpper isToday={isToday}>
             <span>{day}</span>
@@ -264,7 +275,7 @@ const Calendar = () => {
               ) : null}
             </DayImageRight>
           </DayBottom>
-        </Day>
+        </Day>,
       );
     }
 
@@ -297,11 +308,9 @@ const Calendar = () => {
         </SubTitleArea>
       </Header>
       <DaysContainer>{renderDays()}</DaysContainer>
-      {!isCurrentOrNextMonth() && (
-        <SubmitButton onClick={goToMonthCard}>
-          이달의 감정 카드 확인하기
-        </SubmitButton>
-      )}
+      <SubmitButton onClick={goToMonthCard} disabled={isCurrentOrNextMonth()}>
+        이달의 감정 카드 확인하기
+      </SubmitButton>
     </CalendarContainer>
   );
 };

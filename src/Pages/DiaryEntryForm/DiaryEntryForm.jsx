@@ -269,7 +269,7 @@ const DairyEntryForm = () => {
     };
 
     fetchTodayDiary();
-  }, []);
+  }, [accessToken, setValue]);
 
   useEffect(() => {
     setIsDisabled(diaryEntry.length === 0 || diaryEntry.length > 300);

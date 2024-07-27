@@ -19,8 +19,14 @@ const EmotionCommentWrp = styled.div`
           ? "#262B46"
           : props.emotion === "passion"
             ? "rgba(59, 231, 128, 0.12)"
-            : " #333"
-      : " #333"};
+            : props.emotion === "anger"
+              ? "rgba(205, 71, 71, 0.13)"
+              : props.emotion === "moved"
+                ? "rgba(221, 84, 156, 0.15)"
+                : props.emotion === "anxiety"
+                  ? "rgba(146, 80, 252, 0.13)"
+                  : "#333"
+      : "#333"};
   position: relative;
   flex-shrink: 0;
   border-radius: 46px 20px 20px 15px;

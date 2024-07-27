@@ -22,15 +22,6 @@ const LoginBox = styled.div`
   height: 100%;
 `;
 
-const LoginText = styled.p`
-  font-size: 41.05px;
-  font-weight: bold;
-  color: #d9d000;
-  text-align: center;
-  line-height: 160%;
-  letter-spacing: -0.821px;
-`;
-
 const LoginButton = styled.button`
   width: 100%;
   max-width: 335px;
