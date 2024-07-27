@@ -7,9 +7,7 @@ import api from "../../utils/api";
 const KaKaoCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { accessToken, setAccessToken, setNickname } = useAuthStore(
-    (state) => state,
-  );
+  const { setAccessToken, setNickname } = useAuthStore((state) => state);
 
   const sendCodeToBackend = useCallback(
     async (code, state, provider) => {
@@ -25,7 +23,19 @@ const KaKaoCallback = () => {
         setNickname(response.data.user_nickname);
 
         // 프로필 조회
-        await fetchUserProfile();
+        try {
+          const profileResponse = await api.get("/api/v1/users/me", {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          if (profileResponse.status === 200) {
+            localStorage.setItem("user_email", profileResponse.data.data.email);
+          }
+        } catch (error) {
+          console.error("Failed to fetch user profile", error);
+        }
 
         if (isNewUser) {
           navigate("/email-check?provider=kakao");
@@ -39,24 +49,8 @@ const KaKaoCallback = () => {
         navigate("/");
       }
     },
-    [navigate, setAccessToken],
+    [navigate, setAccessToken, setNickname],
   );
-
-  const fetchUserProfile = async () => {
-    try {
-      const response = await api.get("/api/v1/users/me", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      if (response.status === 200) {
-        localStorage.setItem("user_email", response.data.data.email);
-      }
-    } catch (error) {
-      console.error("Failed to fetch user profile", error);
-    }
-  };
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);

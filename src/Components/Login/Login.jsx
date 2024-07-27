@@ -43,7 +43,7 @@ const LoginButton = styled.button`
   justify-content: center;
   position: absolute;
   bottom: 20px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
 const KakaoLoginButton = styled(LoginButton)`
@@ -100,7 +100,7 @@ const Login = () => {
           카카오로 로그인
         </KakaoLoginButton>
 
-        <LoginButton onClick={handleNaverLogin}>
+        <LoginButton onClick={handleNaverLogin} disabled={true}>
           <ButtonContent>
             <StyledNaverLogo width={20} height={20} />
             네이버로 로그인
