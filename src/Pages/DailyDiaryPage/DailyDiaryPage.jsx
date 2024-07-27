@@ -135,8 +135,6 @@ const DailyDiaryPage = () => {
     4: ["불안", "#9250FC"],
     5: ["버럭", "#E14C4C"],
     6: ["슬픔", "#5B75FF"],
-    7: ["슬픔", "#5B75FF"],
-    8: ["슬픔", "#5B75FF"],
   };
   const handleInfoClick = () => {
     navigate("/emotionInfo");
@@ -187,22 +185,32 @@ const DailyDiaryPage = () => {
     (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id
   );
 
-  const otherEmotions = DetailEmotion.filter(
+  let otherEmotions = DetailEmotion.filter(
     (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id
   )
     .sort((a, b) => b.percent - a.percent)
     .slice(0, 2);
 
+  let finalChosenEmotion = chosenEmotion;
+  if (!chosenEmotion && DetailEmotion.length > 0) {
+    finalChosenEmotion = DetailEmotion.sort((a, b) => b.percent - a.percent)[0];
+    otherEmotions = DetailEmotion.filter(
+      (emotion) => emotion.emotion_id !== finalChosenEmotion.emotion_id
+    )
+      .sort((a, b) => b.percent - a.percent)
+      .slice(0, 2);
+  }
   return (
     <Container>
       <NavBarArrow to="/calendar" />
 
       <Title>
         {year}년 {month}월 {day}일에는 <br />
-        <EmotionColor color={emotionTitle[DetailData.chosen_emotion_id][1]}>
-          {emotionTitle[DetailData.chosen_emotion_id][0]}
-        </EmotionColor>
-        ,
+        {finalChosenEmotion && (
+          <EmotionColor color={emotionTitle[finalChosenEmotion.emotion_id][1]}>
+            {emotionTitle[finalChosenEmotion.emotion_id][0]}
+          </EmotionColor>
+        )}
         {otherEmotions.map((emotion, index) => (
           <React.Fragment key={index}>
             {index > 0 && ","}
@@ -221,13 +229,13 @@ const DailyDiaryPage = () => {
       <Text>{DetailData.content}</Text>
 
       <TextDescription>가장 인상 깊었던 감정이에요</TextDescription>
-      {chosenEmotion && (
+      {finalChosenEmotion && (
         <EmotionComment
-          emotionId={chosenEmotion.emotion_id}
+          emotionId={finalChosenEmotion.emotion_id}
           imgPosition={{ right: "-40px" }}
           padding="20px 55px 20px 30px"
         >
-          {chosenEmotion.content}
+          {finalChosenEmotion.content}
         </EmotionComment>
       )}
       <TextDescriptionSecond>다른 감정들도 살펴볼까요? </TextDescriptionSecond>

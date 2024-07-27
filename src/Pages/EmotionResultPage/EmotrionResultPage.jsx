@@ -182,10 +182,11 @@ const EmotionResultPage = () => {
     setIsButtonDisabled(selectedEmotion === null);
 
     const date = new Date();
-    const formattedDate = `${String(date.getMonth() + 1).padStart(2, "0")}월${String(date.getDate()).padStart(2, "0")}일`;
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedDate = `${month}월 ${day}일`;
     setCurrentDate(formattedDate);
   }, [selectedEmotion]);
-
   const handleEmotionClick = (emotion) => {
     setSelectedEmotion(emotionMap[emotion]);
     setValue("emotion_id", emotionEnum[emotion]);
@@ -202,7 +203,7 @@ const EmotionResultPage = () => {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        },
+        }
       );
 
       if (response.status === 200) {

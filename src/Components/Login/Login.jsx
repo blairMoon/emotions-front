@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigateExternal } from "../../hooks/useNavigateExternal";
-import styled from "styled-components";
-import { ReactComponent as NaverIcon } from "../../assets/images/nLogo.svg";
-import Logo from "../../assets/images/logo.svg";
 
+import { ReactComponent as NaverIcon } from "../../assets/images/nLogo.svg";
+import styled from "styled-components";
+import { ReactComponent as KakaoIcon } from "../../assets/images/kakao.svg";
+import Logo from "../../assets/images/logo.svg";
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -35,7 +36,8 @@ const LoginButton = styled.button`
   width: 100%;
   max-width: 335px;
   height: 65px;
-  background-color: #03c75a;
+  background-color: var(--Gray-01, #727272);
+
   color: #f4f4f4;
   border: none;
   border-radius: 8px;
@@ -43,6 +45,7 @@ const LoginButton = styled.button`
   font-weight: bold;
   line-height: 160%;
   letter-spacing: -0.36px;
+  flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,12 +54,22 @@ const LoginButton = styled.button`
   cursor: pointer;
 `;
 
+const KakaoLoginButton = styled(LoginButton)`
+  flex-direction: row;
+  background: #ffe812;
+  bottom: 80px;
+  color: #000000;
+  margin-bottom: 14px;
+`;
+
 const ButtonContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
-
+const StyledKakaoLogo = styled(KakaoIcon)`
+  margin-right: 20px;
+`;
 const StyledNaverLogo = styled(NaverIcon)`
   margin-right: 20px;
 `;
@@ -77,17 +90,25 @@ const Login = () => {
   };
 
   return (
-    <LoginContainer>
-      <LoginBox>
-        <img src={Logo} alt="logo" />
-      </LoginBox>
-      <LoginButton onClick={handleLogin}>
-        <ButtonContent>
-          <StyledNaverLogo width={20} height={20} />
-          네이버로 로그인
-        </ButtonContent>
-      </LoginButton>
-    </LoginContainer>
+    <>
+      <LoginContainer>
+        <LoginBox>
+          <img src={Logo} alt="logo" />
+        </LoginBox>
+
+        <KakaoLoginButton>
+          <StyledKakaoLogo width={32} height={32} />
+          카카오로 로그인
+        </KakaoLoginButton>
+
+        <LoginButton onClick={handleLogin}>
+          <ButtonContent>
+            <StyledNaverLogo width={20} height={20} />
+            네이버로 로그인
+          </ButtonContent>
+        </LoginButton>
+      </LoginContainer>
+    </>
   );
 };
 
