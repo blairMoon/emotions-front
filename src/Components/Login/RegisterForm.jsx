@@ -146,17 +146,17 @@ const NextButton = styled.button`
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
+  const [newNickname, setNewNickname] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { accessToken, setNicknameOnStore } = useAuthStore((state) => state);
+  const { accessToken, setNickname } = useAuthStore((state) => state);
 
   const checkNickname = useCallback(async () => {
     try {
       const response = await api.post(
         `/api/v1/users/check-nickname2`,
         {
-          nickname: nickname,
+          nickname: newNickname,
         },
         {
           headers: {
@@ -180,7 +180,7 @@ const RegisterForm = () => {
       setErrorMessage("닉네임 확인에 실패했습니다.");
       return false;
     }
-  }, [nickname, accessToken]);
+  }, [newNickname, accessToken]);
 
   const handleNicknameChange = (e) => {
     const newNickname = e.target.value;
@@ -191,12 +191,12 @@ const RegisterForm = () => {
     } else {
       setErrorMessage("");
       setIsNicknameValid(true);
-      setNickname(newNickname);
+      setNewNickname(newNickname);
     }
   };
 
   const handleClearNickname = () => {
-    setNickname("");
+    setNewNickname("");
     setIsNicknameValid(false);
     setErrorMessage("");
   };
@@ -206,7 +206,7 @@ const RegisterForm = () => {
       const response = await api.patch(
         `/api/v1/users/me`,
         {
-          nickname: nickname,
+          nickname: newNickname,
         },
         {
           headers: {
@@ -216,7 +216,7 @@ const RegisterForm = () => {
       );
 
       if (response.status === 200) {
-        setNicknameOnStore(nickname);
+        setNickname(newNickname);
       }
     } catch (error) {
       console.error("Failed to fetch user profile", error);
@@ -258,11 +258,11 @@ const RegisterForm = () => {
           <InputWrapper>
             <NicknameInput
               placeholder="사용하실 닉네임을 입력해주세요"
-              value={nickname}
+              value={newNickname}
               onChange={handleNicknameChange}
               isInvalid={!isNicknameValid && errorMessage !== ""}
             />
-            {nickname && (
+            {newNickname && (
               <ClearButton onClick={handleClearNickname} type="button">
                 <StyledClearIcon />
               </ClearButton>
