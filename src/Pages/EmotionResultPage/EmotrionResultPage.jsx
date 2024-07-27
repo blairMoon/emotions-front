@@ -166,7 +166,8 @@ const EmotionResultPage = () => {
         comment,
         percentage: emotionData.data.percentage[emotion] || 0,
       }))
-      .sort((a, b) => b.percentage - a.percentage);
+      .sort((a, b) => b.percentage - a.percentage)
+      .slice(0, 3);
   }, [emotionData]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
