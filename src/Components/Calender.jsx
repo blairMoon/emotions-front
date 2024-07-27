@@ -74,6 +74,7 @@ const DaysContainer = styled.div`
 `;
 
 const Day = styled.div`
+  cursor: ${(props) => (props.hasEmotion ? "pointer" : "default")};
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -171,7 +172,7 @@ const Calendar = () => {
   };
 
   const getFormattedDate = (date) => {
-    const month = date.getMonth() + 1; // Months are 0-based
+    const month = date.getMonth() + 1;
     const year = date.getFullYear();
     return `${year}년 ${month}월`;
   };
@@ -203,9 +204,11 @@ const Calendar = () => {
     const emotion = emotionData.find(
       (e) => new Date(e.created_datetime).getDate() === day,
     );
-    navigate(`/diary/${year}/${month}/${day}`, {
-      state: { id: emotion?.id },
-    });
+    if (emotion) {
+      navigate(`/diary/${year}/${month}/${day}`, {
+        state: { id: emotion.id },
+      });
+    }
   };
 
   const getEmotionImage = (emotion) => {
