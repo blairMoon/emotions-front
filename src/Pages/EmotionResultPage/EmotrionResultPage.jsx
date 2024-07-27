@@ -196,7 +196,7 @@ const EmotionResultPage = () => {
   const sendMainEmotion = async (emotion_id) => {
     try {
       const response = await api.patch(
-        `/api/v1/diaries/${emotionData.data.diary_id}/`,
+        `/api/v1/diaries/${emotionData.data.diary_id}`,
         {
           main_emotion_id: emotion_id,
         },
