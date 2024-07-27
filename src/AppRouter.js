@@ -11,6 +11,7 @@ import EmotionResultPage from "./Pages/EmotionResultPage/EmotrionResultPage";
 import SettingPage from "./Pages/SettingPage/SettingPage";
 import EmotionInfo from "./Pages/EmotionInfo/EmotionInfo";
 import MonthlyEmotionPage from "./Pages/MonthlyEmotionPage/MonthlyEmotionPage";
+import KaKaoCallback from "./Components/Login/KaKaoCallback";
 
 const AppRouter = () => {
   function setScreenSize() {
@@ -33,6 +34,7 @@ const AppRouter = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/email-check" element={<EmailCheck />} />
       <Route path="/naver-callback" element={<NaverCallback />} />
+      <Route path="/kakao-callback" element={<KaKaoCallback />} />
       <Route path="/register" element={<RegisterForm />} />
       {/* 다이어리 */}
       <Route path="/diary" element={<DiaryPage />} />

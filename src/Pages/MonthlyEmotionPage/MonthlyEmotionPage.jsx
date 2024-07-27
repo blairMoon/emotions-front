@@ -22,17 +22,8 @@ const Container = styled.div`
   scrollbar-width: none;
 `;
 
-//todo : fixed 왜 안되는지 확인해봐야함
-const FixedBar = styled(NavBarArrow)`
-  border: 3px solid pink;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-`;
-
 const CardImg = styled.img`
+  margin-top: 12px;
   border-radius: 24px;
 `;
 
@@ -62,7 +53,7 @@ const MonthlyEmotionPage = () => {
           canvas.width,
           canvas.height,
           canvas.width - radius,
-          canvas.height
+          canvas.height,
         );
         ctx.lineTo(radius, canvas.height);
         ctx.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
@@ -97,7 +88,7 @@ const MonthlyEmotionPage = () => {
   return (
     <>
       <Container>
-        <FixedBar to="/calendar" text="감정 카드" />
+        <NavBarArrow to="/calendar" text="감정 카드" />
         <CardImg src={EmotionCard} ref={cardRef} />
         <CustomBtn onClick={handleSaveImage}>
           감정카드 이미지로 저장하기

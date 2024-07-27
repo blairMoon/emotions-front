@@ -42,6 +42,10 @@ const SubTitleArea = styled.div`
 const ButtonArea = styled.div`
   display: flex;
   gap: 20px;
+
+  img {
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.div`
@@ -86,7 +90,6 @@ const Day = styled.div`
 
 const DayUpper = styled.div`
   display: flex;
-  color: ${(props) => (props.isToday ? "#F4F4F4" : "var(--Gray-01, #727272)")};
   font-family: SUIT;
   font-size: 16px;
   font-style: normal;
@@ -97,6 +100,16 @@ const DayUpper = styled.div`
   padding: 2px 100px 2px 4px;
   align-items: center;
   align-self: stretch;
+`;
+
+const DayText = styled.div`
+  color: ${(props) =>
+    props.isToday ? "var(--Black-02, #2b2b2b)" : "var(--Gray-01, #727272)"};
+  background-color: ${(props) =>
+    props.isToday ? "var(--White-01, #f4f4f4)" : "var(--Black-03, #1a1a1a)"};
+  border-radius: 24px;
+  padding: 3px;
+  transform: translateX(-20%);
 `;
 
 const DayBottom = styled.div`
@@ -122,7 +135,7 @@ const DayImageRight = styled.div`
 `;
 
 const Calendar = () => {
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const { accessToken, nickname } = useAuthStore((state) => state);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [emotionData, setEmotionData] = useState([]);
   const today = new Date();
@@ -250,7 +263,7 @@ const Calendar = () => {
           date.getDate() === day
         );
       });
-      console.log(emotion);
+
       days.push(
         <Day
           key={day}
@@ -261,7 +274,7 @@ const Calendar = () => {
           emotionExists={emotion}
         >
           <DayUpper isToday={isToday}>
-            <span>{day}</span>
+            <DayText isToday={isToday}>{day}</DayText>
           </DayUpper>
           <DayBottom>
             <DayImageLeft>
@@ -300,7 +313,7 @@ const Calendar = () => {
       <NavBarArrow to="/diary" />
       <Header>
         <TitleArea>
-          <Title>포텐님의 감정 캘린더에요</Title>
+          <Title>{nickname}님의 감정 캘린더에요</Title>
         </TitleArea>
         <SubTitleArea>
           <SubTitle>{getFormattedDate(currentDate)}</SubTitle>

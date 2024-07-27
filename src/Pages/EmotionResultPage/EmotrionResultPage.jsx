@@ -177,7 +177,7 @@ const EmotionResultPage = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [currentDate, setCurrentDate] = useState("");
   const navigate = useNavigate();
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const { accessToken, nickname } = useAuthStore((state) => state);
 
   useEffect(() => {
     setIsButtonDisabled(selectedEmotion === null);
@@ -204,7 +204,7 @@ const EmotionResultPage = () => {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (response.status === 200) {
@@ -240,7 +240,7 @@ const EmotionResultPage = () => {
             );
           })}
           이
-          <br /> 포텐님께 찾아왔어요!
+          <br /> {nickname}님께 찾아왔어요!
         </Title>
         <SubTitle>가장 인상 깊은 감정이를 선택해주세요</SubTitle>
 

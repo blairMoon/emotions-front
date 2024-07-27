@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as AngerSvg } from "../../assets/images/anger_noeye.svg";
@@ -146,64 +146,89 @@ const NextButton = styled.button`
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState("");
+  const [newNickname, setNewNickname] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const setNicknameOnStore = useAuthStore((state) => state.setNickname);
+  const { accessToken, setNickname } = useAuthStore((state) => state);
 
-  const validateNickname = useCallback((name) => {
-    const forbiddenWords = ["관리자", "admin", "운영자", "tlqkf"]; // 금지어 목록
-    const trimmedName = name.trim();
-    if (trimmedName.length < 3) {
+  const checkNickname = useCallback(async () => {
+    try {
+      const response = await api.post(
+        `/api/v1/users/check-nickname2`,
+        {
+          nickname: newNickname,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+
+      if (response.status === 200 && response.data.data.is_valid) {
+        setIsNicknameValid(true);
+        setErrorMessage("");
+        return true;
+      } else {
+        setIsNicknameValid(false);
+        setErrorMessage(response.data.message);
+        return false;
+      }
+    } catch (error) {
+      console.error("Failed to check nickname", error);
       setIsNicknameValid(false);
-      setErrorMessage("");
-    } else if (
-      forbiddenWords.some((word) => trimmedName.toLowerCase().includes(word))
-    ) {
-      setIsNicknameValid(false);
-      setErrorMessage("사용이 불가능한 닉네임이에요");
-    } else {
-      setIsNicknameValid(true);
-      setErrorMessage("");
+      setErrorMessage("닉네임 확인에 실패했습니다.");
+      return false;
     }
-  }, []);
-
-  useEffect(() => {
-    validateNickname(nickname);
-  }, [nickname, validateNickname]);
+  }, [newNickname, accessToken]);
 
   const handleNicknameChange = (e) => {
     const newNickname = e.target.value;
-    setNickname(newNickname);
+
+    if (newNickname.length > 8) {
+      setErrorMessage("닉네임은 8자 이하로 입력해주세요.");
+      setIsNicknameValid(false);
+    } else {
+      setErrorMessage("");
+      setIsNicknameValid(true);
+      setNewNickname(newNickname);
+    }
   };
 
   const handleClearNickname = () => {
-    setNickname("");
+    setNewNickname("");
     setIsNicknameValid(false);
     setErrorMessage("");
   };
 
   const updateUserProfile = async () => {
     try {
-      const response = await api.patch(`/api/v1/users/me`, {
-        nickname: nickname,
-      });
+      const response = await api.patch(
+        `/api/v1/users/me`,
+        {
+          nickname: newNickname,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
 
       if (response.status === 200) {
-        setNicknameOnStore(nickname);
+        setNickname(newNickname);
       }
-
-      console.log(response.data);
     } catch (error) {
       console.error("Failed to fetch user profile", error);
     }
   };
 
   const handleNext = async () => {
-    if (isNicknameValid) {
+    const isValid = await checkNickname();
+
+    if (isValid) {
       try {
         await updateUserProfile();
-
         navigate("/diary");
       } catch (error) {
         console.error("Failed to update nickname", error);
@@ -233,11 +258,11 @@ const RegisterForm = () => {
           <InputWrapper>
             <NicknameInput
               placeholder="사용하실 닉네임을 입력해주세요"
-              value={nickname}
+              value={newNickname}
               onChange={handleNicknameChange}
               isInvalid={!isNicknameValid && errorMessage !== ""}
             />
-            {nickname && (
+            {newNickname && (
               <ClearButton onClick={handleClearNickname} type="button">
                 <StyledClearIcon />
               </ClearButton>

@@ -5,6 +5,7 @@ import { ReactComponent as NaverIcon } from "../../assets/images/nLogo.svg";
 import styled from "styled-components";
 import { ReactComponent as KakaoIcon } from "../../assets/images/kakao.svg";
 import Logo from "../../assets/images/logo.svg";
+
 const LoginContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -42,7 +43,7 @@ const LoginButton = styled.button`
   justify-content: center;
   position: absolute;
   bottom: 20px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 `;
 
 const KakaoLoginButton = styled(LoginButton)`
@@ -68,16 +69,33 @@ const StyledNaverLogo = styled(NaverIcon)`
 const Login = () => {
   const navigateExternal = useNavigateExternal();
 
-  const clientId = process.env.REACT_APP_NAVER_CLIENT_ID || "";
-  const redirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI || "";
+  const naverClientId = process.env.REACT_APP_NAVER_CLIENT_ID || "";
+  const naverRedirectUri = process.env.REACT_APP_NAVER_REDIRECT_URI || "";
+  const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID || "";
+  const kakaoRedirectUri = process.env.REACT_APP_KAKAO_REDIRECT_URI || "";
 
-  // TODO: CSRF 방지를 위한 랜덤한 문자열 생성
-  const state = "RANDOM_STATEsdsd";
+  const generateRandomString = (length) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
 
-  const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
+  const state = generateRandomString(16) || "";
 
-  const handleLogin = () => {
+  const naverLoginUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${naverClientId}&redirect_uri=${naverRedirectUri}&state=${state}`;
+  const kakaoLoginUrl = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}&state=${state}`;
+
+  const handleNaverLogin = () => {
     navigateExternal(naverLoginUrl);
+  };
+
+  const handleKakaoLogin = () => {
+    navigateExternal(kakaoLoginUrl);
   };
 
   return (
@@ -87,12 +105,12 @@ const Login = () => {
           <img src={Logo} alt="logo" />
         </LoginBox>
 
-        <KakaoLoginButton>
+        <KakaoLoginButton onClick={handleKakaoLogin}>
           <StyledKakaoLogo width={32} height={32} />
           카카오로 로그인
         </KakaoLoginButton>
 
-        <LoginButton onClick={handleLogin}>
+        <LoginButton onClick={handleNaverLogin} disabled={true}>
           <ButtonContent>
             <StyledNaverLogo width={20} height={20} />
             네이버로 로그인
