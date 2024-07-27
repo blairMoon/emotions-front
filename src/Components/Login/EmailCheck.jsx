@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as NaverLogo } from "../../assets/images/naverLogo.svg";
+import { ReactComponent as KaKaoLogo } from "../../assets/images/kakaoLogo.svg";
 import NavBarArrow from "../NavbarArrow";
 
 const PageContainer = styled.div`
@@ -46,6 +47,10 @@ const StyledNaverLogo = styled(NaverLogo)`
   margin-right: 10px;
 `;
 
+const StyledKaKaoLogo = styled(KaKaoLogo)`
+  margin-right: 10px;
+`;
+
 const Email = styled.span`
   font-size: 18px;
   font-style: normal;
@@ -79,6 +84,8 @@ const NextButton = styled.button`
 
 const EmailCheck = () => {
   const navigate = useNavigate();
+  const location = window.location;
+  const provider = location.search.split("=")[1];
 
   const userEmail = localStorage.getItem("user_email");
 
@@ -92,12 +99,16 @@ const EmailCheck = () => {
         <NavBarArrow text="이메일 확인" to="/" />
         <Content>
           <Message>
-            네이버 이메일을
+            {provider === "naver" ? "네이버" : "카카오톡"} 이메일을
             <br />
             확인해주세요
           </Message>
           <EmailBox>
-            <StyledNaverLogo width={28} height={28} />
+            {provider === "naver" ? (
+              <StyledNaverLogo width={28} height={28} />
+            ) : (
+              <StyledKaKaoLogo width={28} height={28} />
+            )}
             <Email>{userEmail}</Email>
           </EmailBox>
         </Content>

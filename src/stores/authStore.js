@@ -8,11 +8,6 @@ const useAuthStore = create(
       accessToken: null,
       setAccessToken: (token) => {
         set({ accessToken: token });
-        if (token) {
-          api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        } else {
-          delete api.defaults.headers.common["Authorization"];
-        }
       },
 
       clearToken: () => {

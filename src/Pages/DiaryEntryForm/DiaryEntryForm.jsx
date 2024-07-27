@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useForm } from "react-hook-form";
@@ -182,6 +182,7 @@ const DairyEntryForm = () => {
   const [canCreate, setCanCreate] = useState(false);
   const accessToken = useAuthStore((state) => state.accessToken);
   const [topEmotions, setTopEmotions] = useState([]);
+  const [diaryData, setDiaryData] = useState(null);
 
   const {
     register,
@@ -248,28 +249,41 @@ const DairyEntryForm = () => {
         });
 
         if (response.status === 200) {
-          setCanCreate(response.data.data.can_create);
-          setValue("diaryEntry", response.data.data.diary.content);
-          if (
-            response.data.data.diary &&
-            response.data.data.diary.emotion_reacts
-          ) {
-            const sortedEmotions = response.data.data.diary.emotion_reacts
-              .filter((emotion) => emotion.percent > 0)
-              .sort((a, b) => b.percent - a.percent)
-              .slice(0, 3)
-              .map((emotion) => emotion.emotion_id); // emotion_id를 사용하거나 필요한 다른 속성으로 변경할 수 있습니다.
-
-            setTopEmotions(sortedEmotions);
-          }
+          setDiaryData(response.data.data);
         }
       } catch (error) {
-        console.error("Failed to fetch user profile:", error);
+        console.error("Failed to fetch today's diary:", error);
       }
     };
 
     fetchTodayDiary();
-  }, [accessToken, setValue]);
+  }, [accessToken]);
+
+  const processedDiaryData = useMemo(() => {
+    if (!diaryData) return null;
+
+    const canCreate = diaryData.can_create;
+    const diaryContent = diaryData.diary?.content || "";
+    let topEmotions = [];
+
+    if (diaryData.diary && diaryData.diary.emotion_reacts) {
+      topEmotions = diaryData.diary.emotion_reacts
+        .filter((emotion) => emotion.percent > 0)
+        .sort((a, b) => b.percent - a.percent)
+        .slice(0, 3)
+        .map((emotion) => emotion.emotion_id);
+    }
+
+    return { canCreate, diaryContent, topEmotions };
+  }, [diaryData]);
+
+  useEffect(() => {
+    if (processedDiaryData) {
+      setCanCreate(processedDiaryData.canCreate);
+      setValue("diaryEntry", processedDiaryData.diaryContent);
+      setTopEmotions(processedDiaryData.topEmotions);
+    }
+  }, [processedDiaryData, setValue]);
 
   useEffect(() => {
     setIsDisabled(diaryEntry.length === 0 || diaryEntry.length > 300);

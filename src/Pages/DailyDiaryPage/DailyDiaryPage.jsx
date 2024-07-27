@@ -159,11 +159,11 @@ const DailyDiaryPage = () => {
     );
   }
   const chosenEmotion = DetailEmotion.find(
-    (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id
+    (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id,
   );
 
   let otherEmotions = DetailEmotion.filter(
-    (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id
+    (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id,
   )
     .sort((a, b) => b.percent - a.percent)
     .slice(0, 2);
@@ -172,7 +172,7 @@ const DailyDiaryPage = () => {
   if (!chosenEmotion && DetailEmotion.length > 0) {
     finalChosenEmotion = DetailEmotion.sort((a, b) => b.percent - a.percent)[0];
     otherEmotions = DetailEmotion.filter(
-      (emotion) => emotion.emotion_id !== finalChosenEmotion.emotion_id
+      (emotion) => emotion.emotion_id !== finalChosenEmotion.emotion_id,
     )
       .sort((a, b) => b.percent - a.percent)
       .slice(0, 2);
@@ -190,9 +190,9 @@ const DailyDiaryPage = () => {
         )}
         {otherEmotions.map((emotion, index) => (
           <React.Fragment key={index}>
-            {index > 0 && ","}
+            {index <= otherEmotions.length - 1 && ", "}
             <EmotionColor color={emotionTitle[emotion.emotion_id][1]}>
-              &nbsp; {emotionTitle[emotion.emotion_id][0]}
+              {emotionTitle[emotion.emotion_id][0]}
             </EmotionColor>
           </React.Fragment>
         ))}
@@ -205,7 +205,7 @@ const DailyDiaryPage = () => {
       {finalChosenEmotion && (
         <EmotionComment
           isSelected={true}
-          emotion={emotionMap[chosenEmotion.emotion_id]}
+          emotion={emotionMap[finalChosenEmotion.emotion_id]}
           emotionId={finalChosenEmotion.emotion_id}
           imgPosition={{ right: "-40px" }}
           padding="20px 55px 20px 30px"

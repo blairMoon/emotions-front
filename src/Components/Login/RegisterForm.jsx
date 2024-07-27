@@ -149,7 +149,7 @@ const RegisterForm = () => {
   const [nickname, setNickname] = useState("");
   const [isNicknameValid, setIsNicknameValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const setNicknameOnStore = useAuthStore((state) => state.setNickname);
+  const { accessToken, setNicknameOnStore } = useAuthStore((state) => state);
 
   const validateNickname = useCallback((name) => {
     const forbiddenWords = ["관리자", "admin", "운영자", "tlqkf"]; // 금지어 목록
@@ -185,9 +185,17 @@ const RegisterForm = () => {
 
   const updateUserProfile = async () => {
     try {
-      const response = await api.patch(`/api/v1/users/me`, {
-        nickname: nickname,
-      });
+      const response = await api.patch(
+        `/api/v1/users/me`,
+        {
+          nickname: nickname,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
 
       if (response.status === 200) {
         setNicknameOnStore(nickname);

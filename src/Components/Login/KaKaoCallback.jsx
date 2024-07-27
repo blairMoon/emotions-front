@@ -4,7 +4,7 @@ import LoadingPage from "./Loading";
 import useAuthStore from "../../stores/authStore";
 import api from "../../utils/api";
 
-const NaverCallback = () => {
+const KaKaoCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { accessToken, setAccessToken, setNickname } = useAuthStore(
@@ -15,7 +15,7 @@ const NaverCallback = () => {
     async (code, state, provider) => {
       try {
         const response = await api.post(
-          `/api/v1/auth/naver-login?provider=${provider}`,
+          `/api/v1/auth/kakao-login?provider=${provider}`,
           { code, state },
         );
         const accessToken = response.data.access_token;
@@ -28,7 +28,7 @@ const NaverCallback = () => {
         await fetchUserProfile();
 
         if (isNewUser) {
-          navigate("/email-check?provider=naver");
+          navigate("/email-check?provider=kakao");
           return;
         }
 
@@ -62,7 +62,7 @@ const NaverCallback = () => {
     const searchParams = new URLSearchParams(location.search);
     const code = searchParams.get("code");
     const state = searchParams.get("state");
-    const provider = "naver";
+    const provider = "kakao";
 
     if (code && state) {
       sendCodeToBackend(code, state, provider);
@@ -75,4 +75,4 @@ const NaverCallback = () => {
   return <LoadingPage />;
 };
 
-export default NaverCallback;
+export default KaKaoCallback;
