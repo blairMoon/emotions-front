@@ -24,17 +24,13 @@ const LoadingMessage = styled.h1`
   margin-top: 24px;
 `;
 
-const DiaryLoading = () => {
+const GlobalLoading = () => {
   return (
     <PageContainer>
       <img src={LoadingGif} alt="loading" width={60} height={60} />
-      <LoadingMessage>
-        감정이들에게 전달 중이에요.
-        <br />
-        조금만 기다려주세요!
-      </LoadingMessage>
+      <LoadingMessage>잠시만 기다려주세요!</LoadingMessage>
     </PageContainer>
   );
 };
 
-export default DiaryLoading;
+export default GlobalLoading;

@@ -42,6 +42,10 @@ const SubTitleArea = styled.div`
 const ButtonArea = styled.div`
   display: flex;
   gap: 20px;
+
+  img {
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.div`

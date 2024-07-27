@@ -5,6 +5,7 @@ import EmotionComment from "../../Components/EmtionComment";
 import NavBarArrow from "../../Components/NavbarArrow";
 import api from "./../../utils/api";
 import useAuthStore from "./../../stores/authStore";
+import GlobalLoading from "../../Components/GlobalLoading";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -151,12 +152,7 @@ const DailyDiaryPage = () => {
     fetchDetailData();
   }, [accessToken, id]);
   if (isLoading) {
-    return (
-      <Container>
-        <NavBarArrow to="/calendar" />
-        <Title>일단 로딩중</Title>
-      </Container>
-    );
+    return <GlobalLoading />;
   }
   const chosenEmotion = DetailEmotion.find(
     (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id,
