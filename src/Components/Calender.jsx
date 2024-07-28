@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import NavBarArrow from "./NavbarArrow";
 import ArrowLeft from "./../assets/images/arrowLeft.svg";
@@ -75,6 +75,41 @@ const DaysContainer = styled.div`
   overflow: scroll;
   margin-bottom: 100px;
   scrollbar-width: none;
+`;
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+`;
+
+const SkeletonPulse = styled.div`
+  display: inline-block;
+  height: ${(props) => props.height || "100%"};
+  width: ${(props) => props.width || "100%"};
+  background-color: #2a2a2a;
+  background-image: linear-gradient(
+    90deg,
+    #2a2a2a 0px,
+    #3a3a3a 40px,
+    #2a2a2a 80px
+  );
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  animation: ${shimmer} 1.5s infinite linear;
+`;
+
+const CircleSkeleton = styled(SkeletonPulse)`
+  border-radius: 15%;
+`;
+
+const EmotionSkeleton = styled(CircleSkeleton)`
+  width: 64px;
+  height: 64px;
 `;
 
 const Day = styled.div`
@@ -277,9 +312,11 @@ const Calendar = () => {
           key={day}
           isToday={isToday}
           onClick={
-            emotion ? () => handleDayClick(year, month + 1, day) : undefined
+            emotion && !loading
+              ? () => handleDayClick(year, month + 1, day)
+              : undefined
           }
-          emotionExists={emotion}
+          emotionExists={emotion && !loading}
         >
           <DayUpper isToday={isToday}>
             <DayText isToday={isToday}>{day}</DayText>
@@ -289,7 +326,9 @@ const Calendar = () => {
               <img src={DaySplitbar} alt="day splitbar" />
             </DayImageLeft>
             <DayImageRight>
-              {emotion ? (
+              {loading ? (
+                <EmotionSkeleton />
+              ) : emotion ? (
                 <img
                   src={getEmotionImage(emotion.chosen_emotion)}
                   alt="emotion"
