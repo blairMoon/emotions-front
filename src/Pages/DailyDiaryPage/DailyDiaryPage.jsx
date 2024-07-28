@@ -89,15 +89,6 @@ const OtherEmotionWrp = styled.div`
   align-items: flex-end;
 `;
 
-const emotionMap = {
-  1: "passing",
-  2: "joy",
-  3: "moved",
-  4: "anxiety",
-  5: "anger",
-  6: "sad",
-};
-
 const DailyDiaryPage = () => {
   const [DetailData, setDetailData] = useState([]);
   const [DetailEmotion, setDetailEmotion] = useState([]);
@@ -155,11 +146,11 @@ const DailyDiaryPage = () => {
     return <GlobalLoading />;
   }
   const chosenEmotion = DetailEmotion.find(
-    (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id
+    (emotion) => emotion.emotion_id === DetailData.chosen_emotion_id,
   );
 
   let otherEmotions = DetailEmotion.filter(
-    (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id
+    (emotion) => emotion.emotion_id !== DetailData.chosen_emotion_id,
   )
     .sort((a, b) => b.percent - a.percent)
     .slice(0, 2);
@@ -168,7 +159,7 @@ const DailyDiaryPage = () => {
   if (!chosenEmotion && DetailEmotion.length > 0) {
     finalChosenEmotion = DetailEmotion.sort((a, b) => b.percent - a.percent)[0];
     otherEmotions = DetailEmotion.filter(
-      (emotion) => emotion.emotion_id !== finalChosenEmotion.emotion_id
+      (emotion) => emotion.emotion_id !== finalChosenEmotion.emotion_id,
     )
       .sort((a, b) => b.percent - a.percent)
       .slice(0, 2);

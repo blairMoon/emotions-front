@@ -10,7 +10,6 @@ import api from "../../utils/api";
 import DiaryLoading from "../../Components/DiaryLoading";
 import useAuthStore from "../../stores/authStore";
 import CuteAlert from "../../Components/CuteAlert";
-import GlobalLoading from "../../Components/GlobalLoading";
 
 const Container = styled.div`
   margin: 0 auto;
@@ -186,7 +185,7 @@ const DairyEntryForm = () => {
   const [topEmotions, setTopEmotions] = useState([]);
   const [diaryData, setDiaryData] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [loadingRender, setLoadingRender] = useState(false);
+  // const [loadingRender, setLoadingRender] = useState(false);
   const handleCloseAlert = () => {
     setShowAlert(false);
   };
@@ -215,7 +214,7 @@ const DairyEntryForm = () => {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        }
+        },
       );
 
       if (response.status === 201) {
@@ -254,7 +253,7 @@ const DairyEntryForm = () => {
 
   useEffect(() => {
     const fetchTodayDiary = async () => {
-      setLoadingRender(true);
+      // setLoadingRender(true);
       try {
         const response = await api.get("/api/v1/diaries/today", {
           headers: {
@@ -268,7 +267,7 @@ const DairyEntryForm = () => {
       } catch (error) {
         setShowAlert(true);
       } finally {
-        setLoadingRender(false);
+        // setLoadingRender(false);
       }
     };
 
@@ -307,9 +306,9 @@ const DairyEntryForm = () => {
   if (loading) {
     return <DiaryLoading />;
   }
-  if (loadingRender) {
-    return <GlobalLoading />;
-  }
+  // if (loadingRender) {
+  //   return <GlobalLoading />;
+  // }
   return (
     <Container>
       <NavBar />
@@ -351,7 +350,7 @@ const DairyEntryForm = () => {
               message: "일기는 300자 이하로 작성해 주세요.",
             },
           })}
-          placeholder="오늘 하루를 기록해주세요! <br/> (* 의미 없는 문구나 너무 짧은 문장은 감정이들의 분석이 어려워요!"
+          placeholder="오늘 하루를 기록해주세요!&#10;(* 의미 없는 문구나 너무 짧은 문장은 감정이들의 분석이 어려워요!)"
           readOnly={!canCreate}
         />
         {errors.diaryEntry && (

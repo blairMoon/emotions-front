@@ -97,9 +97,8 @@ const DayUpper = styled.div`
   line-height: normal;
   width: 100%;
   height: 24px;
-  padding: 2px 100px 2px 4px;
+  padding: 2px -4px;
   align-items: center;
-  align-self: stretch;
 `;
 
 const DayText = styled.div`
@@ -107,9 +106,14 @@ const DayText = styled.div`
     props.isToday ? "var(--Black-02, #2b2b2b)" : "var(--Gray-01, #727272)"};
   background-color: ${(props) =>
     props.isToday ? "var(--White-01, #f4f4f4)" : "var(--Black-03, #1a1a1a)"};
-  border-radius: 24px;
-  padding: 3px;
-  transform: translateX(-20%);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: ${(props) => (props.isToday ? "700" : "600")};
 `;
 
 const DayBottom = styled.div`
@@ -159,7 +163,7 @@ const Calendar = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
         if (response.data) {
           console.log(response.data.data.diaries);
@@ -219,7 +223,7 @@ const Calendar = () => {
 
   const handleDayClick = (year, month, day) => {
     const emotion = emotionData.find(
-      (e) => new Date(e.created_datetime).getDate() === day
+      (e) => new Date(e.created_datetime).getDate() === day,
     );
     if (emotion) {
       navigate(`/diary/${year}/${month}/${day}`, {
@@ -295,7 +299,7 @@ const Calendar = () => {
               ) : null}
             </DayImageRight>
           </DayBottom>
-        </Day>
+        </Day>,
       );
     }
 

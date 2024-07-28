@@ -59,9 +59,11 @@ const ButtonContent = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const StyledKakaoLogo = styled(KakaoIcon)`
   margin-right: 20px;
 `;
+
 const StyledNaverLogo = styled(NaverIcon)`
   margin-right: 20px;
 `;

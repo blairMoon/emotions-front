@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Btn from "./Btn";
 import Joy from "../assets/images/emotionJoy.svg";
 import Sad from "../assets/images/emotionSad.svg";
@@ -15,26 +15,47 @@ const CustomSubmitButton = styled(Btn)`
   margin-top: 40px;
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  bottom: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
+  overflow: hidden;
+  animation: ${fadeIn} 0.3s ease-out;
+`;
+
+const slideUp = keyframes`
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 `;
 
 const ModalContent = styled.div`
   height: 424px;
   background: white;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0;
   text-align: center;
   width: 375px;
+  animation: ${slideUp} 0.3s ease-out;
+  position: relative;
 `;
 
 const ModalText = styled.div`
@@ -45,7 +66,7 @@ const ModalText = styled.div`
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
-  line-height: 160%; /* 32px */
+  line-height: 160%;
   letter-spacing: -0.4px;
 `;
 
