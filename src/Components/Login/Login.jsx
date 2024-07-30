@@ -28,7 +28,7 @@ const LoginButton = styled.button`
   width: 100%;
   max-width: 335px;
   height: 65px;
-  background-color: var(--Gray-01, #727272);
+  background-color: #03c75a;
 
   color: #f4f4f4;
   border: none;
@@ -112,7 +112,7 @@ const Login = () => {
           카카오로 로그인
         </KakaoLoginButton>
 
-        <LoginButton onClick={handleNaverLogin} disabled={true}>
+        <LoginButton onClick={handleNaverLogin}>
           <ButtonContent>
             <StyledNaverLogo width={20} height={20} />
             네이버로 로그인
